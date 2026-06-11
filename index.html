@@ -1188,9 +1188,9 @@ canvas.fcv {
     width: 100%;
     border: none;
     border-radius: 10px;
-    padding: 10px 4px;
+    padding: 22px 4px;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(0.85rem, 1.6vh, 1.2rem);
+    font-size: clamp(1rem, 2vh, 1.4rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1233,6 +1233,8 @@ canvas.fcv {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 1;
+    min-height: 0;
 }
 
 .kpad-disp {
@@ -1254,7 +1256,10 @@ canvas.fcv {
 .kpad-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     gap: 8px;
+    flex: 1;
+    min-height: 0;
 }
 
 .kbtn {
@@ -1265,7 +1270,7 @@ canvas.fcv {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: clamp(1.2rem, 5vh, 1.8rem);
     font-weight: 700;
-    padding: 10px 8px;
+    padding: 8px;
     cursor: pointer;
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
