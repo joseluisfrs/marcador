@@ -267,7 +267,7 @@ html, body {
     display: flex;
     align-items: center;
     background: linear-gradient(180deg, #101624 0%, var(--bg) 100%);
-    padding: 10px 24px;
+    padding: 6px 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
@@ -347,7 +347,7 @@ html, body {
     flex: 1;
     display: flex;
     gap: 8px;
-    padding: 8px;
+    padding: 4px 8px 8px;
     min-height: 0;
 }
 
@@ -509,16 +509,16 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 14px;
+    padding: 6px 10px;
     flex-shrink: 0;
     transition: all 0.2s;
-    gap: 8px;
+    gap: 4px;
     z-index: 5;
 }
 
 /* Player Name */
 .cj .cn {
-    font-size: clamp(1.4rem, 3.2vw, 3.2rem);
+    font-size: clamp(1.2rem, 5.5vh, 2.2rem);
     font-weight: 900;
     text-transform: uppercase;
     font-family: 'Oswald', sans-serif;
@@ -536,7 +536,7 @@ html, body {
 
 /* Main Points Display */
 .cj .cpts {
-    font-size: clamp(14rem, 28vw, 32rem);
+    font-size: clamp(8rem, 42vh, 24rem);
     font-weight: 700;
     line-height: 0.85;
     text-align: center;
@@ -554,10 +554,10 @@ html, body {
 .cj .cst {
     display: flex;
     justify-content: space-around;
-    padding: 12px 10px;
+    padding: 6px 8px;
     flex-shrink: 0;
     transition: all 0.2s;
-    gap: 8px;
+    gap: 4px;
     z-index: 5;
 }
 .si { 
@@ -573,7 +573,7 @@ html, body {
     margin-bottom: 2px;
 }
 .sv {
-    font-size: clamp(1.4rem, 3vw, 2.8rem);
+    font-size: clamp(1.1rem, 5vh, 1.8rem);
     font-weight: 700;
     font-family: 'Oswald', sans-serif;
     line-height: 1;
@@ -590,8 +590,8 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 10px 2px 2px;
-    gap: 15px;
+    padding: 4px 2px 2px;
+    gap: 10px;
     z-index: 15;
 }
 
@@ -635,7 +635,7 @@ html, body {
 }
 .ent-h {
     background: rgba(255, 255, 255, 0.05);
-    padding: 4px 0;
+    padding: 2px 0;
     font-size: 0.65rem;
     letter-spacing: 3px;
     color: var(--gray);
@@ -643,10 +643,10 @@ html, body {
     text-transform: uppercase;
 }
 .ent-v {
-    font-size: clamp(2.6rem, 5vw, 4.8rem);
+    font-size: clamp(2rem, 7vh, 3.2rem);
     font-weight: 700;
     font-family: 'Oswald', sans-serif;
-    padding: 4px 0;
+    padding: 2px 0;
     line-height: 1.1;
     color: var(--gold);
 }
@@ -656,7 +656,7 @@ html, body {
     text-align: center;
     flex-shrink: 0;
     padding: 2px 4px;
-    min-height: 35px;
+    min-height: 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1158,29 +1158,22 @@ canvas.fcv {
 #bot-bar {
     display: flex;
     gap: 16px;
-    padding: 16px 20px;
+    padding: 10px 16px;
     background: #0b111e;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 }
 #bot-bar .pcb {
     flex: 1;
-    padding: 22px 10px;
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    padding: 12px 10px;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
     letter-spacing: 1.5px;
-    border-radius: 14px;
+    border-radius: 10px;
     width: auto; /* Anulamos el ancho del 100% original */
 }
 #bot-bar #i-undo {
     flex: 1;
     background: #6f2fa3;
-}
-#bot-bar #i-cambio {
-    flex: 2.4;
-    background: linear-gradient(135deg, #1ea33a 0%, #157d2a 100%);
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    font-size: clamp(1.2rem, 2.4vw, 1.8rem);
-    font-weight: 900;
 }
 #bot-bar #i-nueva {
     flex: 1;
@@ -1195,11 +1188,11 @@ canvas.fcv {
     background: linear-gradient(185deg, rgba(20, 32, 54, 0.8) 0%, rgba(10, 16, 28, 0.9) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    padding: 16px;
+    padding: 10px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 8px;
 }
 
 .kpad-disp {
@@ -1208,10 +1201,10 @@ canvas.fcv {
     border-radius: 8px;
     color: #00ffcc;
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+    font-size: clamp(1.8rem, 6vh, 2.5rem);
     font-weight: 700;
     text-align: right;
-    padding: 10px 20px;
+    padding: 6px 12px;
     letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(0, 255, 204, 0.45);
     box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
@@ -1221,7 +1214,7 @@ canvas.fcv {
 .kpad-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 8px;
 }
 
 .kbtn {
@@ -1230,9 +1223,9 @@ canvas.fcv {
     border-radius: 8px;
     color: var(--white);
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+    font-size: clamp(1.2rem, 5vh, 1.8rem);
     font-weight: 700;
-    padding: 18px 10px;
+    padding: 10px 8px;
     cursor: pointer;
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
@@ -1269,8 +1262,6 @@ canvas.fcv {
 </style>
 </head>
 <body>
-
-
 
     <!-- ══════════════════════════════════════════════
          P2 — CONFIGURACIÓN (SETTINGS SCREEN)
@@ -1409,14 +1400,9 @@ canvas.fcv {
         <!-- Barra de botones inferior -->
         <div id="bot-bar">
             <button class="pcb pcb-u" id="i-undo" onclick="deshacer()">↩ DESHACER</button>
-            <button class="pcb pcb-t" id="i-cambio" onclick="cambioTurno()">⇄ CAMBIO TURNO</button>
             <button class="pcb pcb-a" id="i-nueva" onclick="confirmarNuevaPartida()">🏁 REINICIAR</button>
         </div>
     </div>
-
-
-
-
 
     <!-- ══════════════════════════════════════════════
          MODAL 3 — ACTA OFICIAL IMPRIMIBLE
