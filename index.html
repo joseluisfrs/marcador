@@ -1175,29 +1175,49 @@ canvas.fcv {
 /* ══════════════════════════════════════════════
    NUEVA BARRA DE BOTONES INFERIOR
 ══════════════════════════════════════════════ */
-#bot-bar {
+.col-side {
+    flex: 1;
     display: flex;
-    gap: 16px;
-    padding: 10px 16px;
-    background: #0b111e;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+}
+
+/* Estilos para los botones laterales de acción (Deshacer y Reiniciar) */
+.col-side .pcb {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(0.85rem, 1.6vh, 1.2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: var(--white);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
     flex-shrink: 0;
 }
-#bot-bar .pcb {
-    flex: 1;
-    padding: 12px 10px;
-    font-size: clamp(1rem, 1.8vw, 1.3rem);
-    letter-spacing: 1.5px;
-    border-radius: 10px;
-    width: auto; /* Anulamos el ancho del 100% original */
-}
-#bot-bar #i-undo {
-    flex: 1;
+
+#i-undo {
     background: #6f2fa3;
 }
-#bot-bar #i-nueva {
-    flex: 1;
+#i-undo:active {
+    background: #592482;
+    transform: scale(0.96);
+}
+
+#i-nueva {
     background: #475569;
+}
+#i-nueva:active {
+    background: #374151;
+    transform: scale(0.96);
 }
 
 /* ══════════════════════════════════════════════
@@ -1333,28 +1353,31 @@ canvas.fcv {
 
         <!-- Área de tarjetas de puntuación -->
         <div id="cars">
-            <!-- Tarjeta Jugador 1 (Blanca) -->
-            <div id="c1" class="cj ac1">
-                <div class="z-add" onclick="cardClic(1, 1)"></div>
-                <div class="z-sub" onclick="cardClic(1, -1)"></div>
-                <div class="h-add" id="ha1"></div>
-                <div class="h-sub" id="hs1"></div>
-                <div class="a-add">+1</div>
-                <div class="a-sub">−1</div>
-                <div class="chd">
-                    <div class="cn" id="jn1">JUGADOR A</div>
-                </div>
-                <div class="cpts" id="jp1">0</div>
-                <div class="cst">
-                    <div class="si">
-                        <span class="sl" id="i-prom1">PROMEDIO</span>
-                        <span class="sv" id="jpr1">0.000</span>
+            <!-- Columna Jugador 1 (Blanca) -->
+            <div class="col-side">
+                <div id="c1" class="cj ac1">
+                    <div class="z-add" onclick="cardClic(1, 1)"></div>
+                    <div class="z-sub" onclick="cardClic(1, -1)"></div>
+                    <div class="h-add" id="ha1"></div>
+                    <div class="h-sub" id="hs1"></div>
+                    <div class="a-add">+1</div>
+                    <div class="a-sub">−1</div>
+                    <div class="chd">
+                        <div class="cn" id="jn1">JUGADOR A</div>
                     </div>
-                    <div class="si">
-                        <span class="sl" id="i-max1">SERIE MAX</span>
-                        <span class="sv" id="jmx1">0</span>
+                    <div class="cpts" id="jp1">0</div>
+                    <div class="cst">
+                        <div class="si">
+                            <span class="sl" id="i-prom1">PROMEDIO</span>
+                            <span class="sv" id="jpr1">0.000</span>
+                        </div>
+                        <div class="si">
+                            <span class="sl" id="i-max1">SERIE MAX</span>
+                            <span class="sv" id="jmx1">0</span>
+                        </div>
                     </div>
                 </div>
+                <button class="pcb" id="i-undo" onclick="deshacer()">↩ DESHACER</button>
             </div>
 
             <!-- Panel de Control Central -->
@@ -1389,38 +1412,34 @@ canvas.fcv {
                     <div class="brd-m" id="j-msg-main"></div>
                     <div class="brd-s" id="j-msg-sub"></div>
                 </div>
-
             </div>
 
-            <!-- Tarjeta Jugador 2 (Amarilla) -->
-            <div id="c2" class="cj in2">
-                <div class="z-add" onclick="cardClic(2, 1)"></div>
-                <div class="z-sub" onclick="cardClic(2, -1)"></div>
-                <div class="h-add" id="ha2"></div>
-                <div class="h-sub" id="hs2"></div>
-                <div class="a-add">+1</div>
-                <div class="a-sub">−1</div>
-                <div class="chd">
-                    <div class="cn" id="jn2">JUGADOR B</div>
-                </div>
-                <div class="cpts" id="jp2">0</div>
-                <div class="cst">
-                    <div class="si">
-                        <span class="sl" id="i-prom2">PROMEDIO</span>
-                        <span class="sv" id="jpr2">0.000</span>
+            <!-- Columna Jugador 2 (Amarilla) -->
+            <div class="col-side">
+                <div id="c2" class="cj in2">
+                    <div class="z-add" onclick="cardClic(2, 1)"></div>
+                    <div class="z-sub" onclick="cardClic(2, -1)"></div>
+                    <div class="h-add" id="ha2"></div>
+                    <div class="h-sub" id="hs2"></div>
+                    <div class="a-add">+1</div>
+                    <div class="a-sub">−1</div>
+                    <div class="chd">
+                        <div class="cn" id="jn2">JUGADOR B</div>
                     </div>
-                    <div class="si">
-                        <span class="sl" id="i-max2">SERIE MAX</span>
-                        <span class="sv" id="jmx2">0</span>
+                    <div class="cpts" id="jp2">0</div>
+                    <div class="cst">
+                        <div class="si">
+                            <span class="sl" id="i-prom2">PROMEDIO</span>
+                            <span class="sv" id="jpr2">0.000</span>
+                        </div>
+                        <div class="si">
+                            <span class="sl" id="i-max2">SERIE MAX</span>
+                            <span class="sv" id="jmx2">0</span>
+                        </div>
                     </div>
                 </div>
+                <button class="pcb" id="i-nueva" onclick="confirmarNuevaPartida()">🏁 REINICIAR</button>
             </div>
-        </div>
-
-        <!-- Barra de botones inferior -->
-        <div id="bot-bar">
-            <button class="pcb pcb-u" id="i-undo" onclick="deshacer()">↩ DESHACER</button>
-            <button class="pcb pcb-a" id="i-nueva" onclick="confirmarNuevaPartida()">🏁 REINICIAR</button>
         </div>
     </div>
 
