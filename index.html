@@ -1658,47 +1658,88 @@ function finalizarPartida() {
 // MODAL: ACTA DE PARTIDO (MOSTRAR E IMPRIMIR)
 // ══════════════════════════════════════════════
 function finalizarPartidaYMostrarActa() {
-    // Generar tabla detallada de entradas
     const p = gameState.play;
-    let tablaEntradasHTML = '';
+    const totalInnings = p.inningHistory.length || 1;
     
-    // Agrupamos en bloques de 10 entradas para que el acta impresa sea muy compacta e igual que en federación
-    const maxDisputed = p.inningHistory.length;
-    let gridsHTML = '';
-    
-    for (let block = 0; block < Math.ceil(maxDisputed / 10); block++) {
-        let headers = '<div class="acta-grid-cell acta-grid-header">JUG.</div>';
-        let j1Row = `<div class="acta-grid-cell acta-grid-header" style="color:var(--blue); font-weight:700;">${gameState.config.n1.substring(0,6).toUpperCase()}</div>`;
-        let j2Row = `<div class="acta-grid-cell acta-grid-header" style="color:#a87c00; font-weight:700;">${gameState.config.n2.substring(0,6).toUpperCase()}</div>`;
+    // Función auxiliar para calcular estadísticas por jugador
+    function getStats(playerIdx) {
+        let blankInnings = 0;
+        let maxConsecutiveBlanks = 0;
+        let currentConsecutiveBlanks = 0;
+        let runsCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, '6+': 0 };
         
-        for (let i = 0; i < 10; i++) {
-            const entIdx = (block * 10) + i;
-            const entNum = entIdx + 1;
-            
-            headers += `<div class="acta-grid-cell acta-grid-header">${entNum}</div>`;
-            
-            if (entIdx < maxDisputed) {
-                const hist = p.inningHistory[entIdx] || { j1Run: 0, j2Run: 0, j1Score: 0, j2Score: 0 };
-                // Mostrar la serie realizada (puntos de esa entrada) y la puntuación acumulada en pequeñito
-                j1Row += `<div class="acta-grid-cell" style="line-height:1.2"><b>${hist.j1Run}</b><br><span style="font-size:0.6rem; color:#666">${hist.j1Score}</span></div>`;
-                j2Row += `<div class="acta-grid-cell" style="line-height:1.2"><b>${hist.j2Run}</b><br><span style="font-size:0.6rem; color:#666">${hist.j2Score}</span></div>`;
+        p.inningHistory.forEach(hist => {
+            const run = (playerIdx === 1) ? hist.j1Run : hist.j2Run;
+            if (run === 0) {
+                blankInnings++;
+                currentConsecutiveBlanks++;
+                if (currentConsecutiveBlanks > maxConsecutiveBlanks) {
+                    maxConsecutiveBlanks = currentConsecutiveBlanks;
+                }
             } else {
-                j1Row += '<div class="acta-grid-cell">-</div>';
-                j2Row += '<div class="acta-grid-cell">-</div>';
+                currentConsecutiveBlanks = 0;
+                if (run === 1) runsCount[1]++;
+                else if (run === 2) runsCount[2]++;
+                else if (run === 3) runsCount[3]++;
+                else if (run === 4) runsCount[4]++;
+                else if (run === 5) runsCount[5]++;
+                else if (run >= 6) runsCount['6+']++;
             }
-        }
+        });
         
-        gridsHTML += `
-            <div class="acta-entradas-cont" style="margin-bottom:12px">
-                <div class="acta-entradas-tit">Entradas ${block * 10 + 1} a ${block * 10 + 10}</div>
-                <div class="acta-grid">
-                    ${headers}
-                    ${j1Row}
-                    ${j2Row}
-                </div>
-            </div>
+        return {
+            blankInnings,
+            blankPct: (blankInnings / totalInnings) * 100,
+            maxConsecutiveBlanks,
+            runsCount
+        };
+    }
+    
+    const stats1 = getStats(1);
+    const stats2 = getStats(2);
+    
+    // Función para dar formato a cada fila de estadística de tacadas
+    function formatStatRow(label, count1, count2) {
+        const pct1 = (count1 / totalInnings) * 100;
+        const pct2 = (count2 / totalInnings) * 100;
+        return `
+            <tr>
+                <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">${label}</td>
+                <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${count1} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct1.toFixed(1)}%)</span></td>
+                <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${count2} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct2.toFixed(1)}%)</span></td>
+            </tr>
         `;
     }
+    
+    const statsTableHTML = `
+        <table class="acta-tbl" style="margin-top:10px; font-size:0.85rem; width:100%; border-collapse:collapse; margin-bottom:20px;">
+            <thead>
+                <tr style="background:#111a2e; color:#fff;">
+                    <th style="text-align:left; padding: 10px; width:45%; font-family:'Oswald',sans-serif;">Estadística de Juego</th>
+                    <th style="color:#fff; background:var(--blue); padding: 10px; font-family:'Oswald',sans-serif; text-align:center;">${gameState.config.n1.toUpperCase()}</th>
+                    <th style="color:#fff; background:#a87c00; padding: 10px; font-family:'Oswald',sans-serif; text-align:center;">${gameState.config.n2.toUpperCase()}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Entradas a Cero (Sin Anotar)</td>
+                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats1.blankPct.toFixed(1)}%)</span></td>
+                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats2.blankPct.toFixed(1)}%)</span></td>
+                </tr>
+                <tr>
+                    <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Racha Máxima sin Anotar (Entradas)</td>
+                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.maxConsecutiveBlanks} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
+                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.maxConsecutiveBlanks} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
+                </tr>
+                ${formatStatRow("Tacadas de 1 punto", stats1.runsCount[1], stats2.runsCount[1])}
+                ${formatStatRow("Tacadas de 2 puntos", stats1.runsCount[2], stats2.runsCount[2])}
+                ${formatStatRow("Tacadas de 3 puntos", stats1.runsCount[3], stats2.runsCount[3])}
+                ${formatStatRow("Tacadas de 4 puntos", stats1.runsCount[4], stats2.runsCount[4])}
+                ${formatStatRow("Tacadas de 5 puntos", stats1.runsCount[5], stats2.runsCount[5])}
+                ${formatStatRow("Tacadas de 6 o más puntos", stats1.runsCount['6+'], stats2.runsCount['6+'])}
+            </tbody>
+        </table>
+    `;
     
     // Formatear motivo del fin de partida
     let motivoTexto = 'FINALIZACIÓN NORMAL';
@@ -1760,8 +1801,8 @@ function finalizarPartidaYMostrarActa() {
             </tbody>
         </table>
         
-        <h3 style="font-family:'Oswald',sans-serif; margin-bottom:10px; font-size:1.1rem; text-transform:uppercase; color:#111a2e">Desarrollo Entrada a Entrada</h3>
-        ${gridsHTML}
+        <h3 style="font-family:'Oswald',sans-serif; margin-bottom:10px; font-size:1.1rem; text-transform:uppercase; color:#111a2e">Estadísticas Detalladas de Tacadas</h3>
+        ${statsTableHTML}
         
         <div class="acta-firmas">
             <div class="acta-firma-box">
