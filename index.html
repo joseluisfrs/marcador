@@ -1255,9 +1255,9 @@ canvas.fcv {
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-n2')">&times;</button>
             </div>
             
-            <span class="cfg-lbl" id="i-pts">Puntos Objetivo</span>
+            <span class="cfg-lbl" id="i-pts">DISTANCIA</span>
             <div class="cfg-in-wrapper">
-                <input class="cfg-in" type="number" id="cfg-pts" value="400" min="1">
+                <input class="cfg-in" type="number" id="cfg-pts" value="400" min="1" max="400">
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-pts')">&times;</button>
             </div>
             
@@ -1517,8 +1517,10 @@ function iniciarPartida() {
     gameState.config.club = 'Club Billar SANTS';
     gameState.config.n1 = document.getElementById('cfg-n1').value.trim() || 'JUGADOR A';
     gameState.config.n2 = document.getElementById('cfg-n2').value.trim() || 'JUGADOR B';
-    gameState.config.maxInnings = 9999;
-    gameState.config.targetPoints = parseInt(document.getElementById('cfg-pts').value) || 400;
+    let pts = parseInt(document.getElementById('cfg-pts').value) || 400;
+    if (pts > 400) pts = 400;
+    if (pts < 1) pts = 1;
+    gameState.config.targetPoints = pts;
     
     // Inicializar estado de juego
     gameState.fase = 'playing';
