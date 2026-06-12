@@ -1667,6 +1667,7 @@ function finalizarPartidaYMostrarActa() {
         let maxConsecutiveBlanks = 0;
         let currentConsecutiveBlanks = 0;
         let runsCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, '6+': 0 };
+        let pointsByRunType = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, '6+': 0 };
         
         p.inningHistory.forEach(hist => {
             const run = (playerIdx === 1) ? hist.j1Run : hist.j2Run;
@@ -1678,12 +1679,12 @@ function finalizarPartidaYMostrarActa() {
                 }
             } else {
                 currentConsecutiveBlanks = 0;
-                if (run === 1) runsCount[1]++;
-                else if (run === 2) runsCount[2]++;
-                else if (run === 3) runsCount[3]++;
-                else if (run === 4) runsCount[4]++;
-                else if (run === 5) runsCount[5]++;
-                else if (run >= 6) runsCount['6+']++;
+                if (run === 1) { runsCount[1]++; pointsByRunType[1] += 1; }
+                else if (run === 2) { runsCount[2]++; pointsByRunType[2] += 2; }
+                else if (run === 3) { runsCount[3]++; pointsByRunType[3] += 3; }
+                else if (run === 4) { runsCount[4]++; pointsByRunType[4] += 4; }
+                else if (run === 5) { runsCount[5]++; pointsByRunType[5] += 5; }
+                else if (run >= 6) { runsCount['6+']++; pointsByRunType['6+'] += run; }
             }
         });
         
@@ -1691,22 +1692,32 @@ function finalizarPartidaYMostrarActa() {
             blankInnings,
             blankPct: (blankInnings / totalInnings) * 100,
             maxConsecutiveBlanks,
-            runsCount
+            runsCount,
+            pointsByRunType
         };
     }
     
     const stats1 = getStats(1);
     const stats2 = getStats(2);
     
-    // Función para dar formato a cada fila de estadística de tacadas
-    function formatStatRow(label, count1, count2) {
-        const pct1 = (count1 / totalInnings) * 100;
-        const pct2 = (count2 / totalInnings) * 100;
+    // Función para dar formato a cada fila de estadística de tacadas (basada en el % de puntos aportados)
+    function formatStatRow(label, key) {
+        const score1 = p.scores[0];
+        const score2 = p.scores[1];
+        
+        const count1 = stats1.runsCount[key];
+        const pts1 = stats1.pointsByRunType[key];
+        const pct1 = score1 > 0 ? (pts1 / score1) * 100 : 0;
+        
+        const count2 = stats2.runsCount[key];
+        const pts2 = stats2.pointsByRunType[key];
+        const pct2 = score2 > 0 ? (pts2 / score2) * 100 : 0;
+        
         return `
             <tr>
                 <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">${label}</td>
-                <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${count1} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct1.toFixed(1)}%)</span></td>
-                <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${count2} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct2.toFixed(1)}%)</span></td>
+                <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${count1} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct1.toFixed(1)}% de los ptos.)</span></td>
+                <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${count2} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct2.toFixed(1)}% de los ptos.)</span></td>
             </tr>
         `;
     }
@@ -1723,20 +1734,20 @@ function finalizarPartidaYMostrarActa() {
             <tbody>
                 <tr>
                     <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Entradas a Cero (Sin Anotar)</td>
-                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats1.blankPct.toFixed(1)}%)</span></td>
-                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats2.blankPct.toFixed(1)}%)</span></td>
+                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats1.blankPct.toFixed(1)}% de entradas)</span></td>
+                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats2.blankPct.toFixed(1)}% de entradas)</span></td>
                 </tr>
                 <tr>
                     <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Racha Máxima sin Anotar (Entradas)</td>
                     <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.maxConsecutiveBlanks} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
                     <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.maxConsecutiveBlanks} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
                 </tr>
-                ${formatStatRow("Tacadas de 1 punto", stats1.runsCount[1], stats2.runsCount[1])}
-                ${formatStatRow("Tacadas de 2 puntos", stats1.runsCount[2], stats2.runsCount[2])}
-                ${formatStatRow("Tacadas de 3 puntos", stats1.runsCount[3], stats2.runsCount[3])}
-                ${formatStatRow("Tacadas de 4 puntos", stats1.runsCount[4], stats2.runsCount[4])}
-                ${formatStatRow("Tacadas de 5 puntos", stats1.runsCount[5], stats2.runsCount[5])}
-                ${formatStatRow("Tacadas de 6 o más puntos", stats1.runsCount['6+'], stats2.runsCount['6+'])}
+                ${formatStatRow("Tacadas de 1 punto", 1)}
+                ${formatStatRow("Tacadas de 2 puntos", 2)}
+                ${formatStatRow("Tacadas de 3 puntos", 3)}
+                ${formatStatRow("Tacadas de 4 puntos", 4)}
+                ${formatStatRow("Tacadas de 5 puntos", 5)}
+                ${formatStatRow("Tacadas de 6 o más puntos", '6+')}
             </tbody>
         </table>
     `;
