@@ -363,54 +363,20 @@ html, body {
     position: relative;
 }
 
-/* Scoring zones */
-.z-add, .z-sub {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 50%;
-    z-index: 10;
-    cursor: pointer;
-}
-.z-add { top: 0; }
-.z-sub { bottom: 0; }
-
 /* Flash hint overlays */
-.h-add, .h-sub {
+.h-add {
     position: absolute;
     left: 0;
     right: 0;
+    top: 0;
     height: 50%;
     opacity: 0;
     transition: opacity 0.15s ease-out;
     pointer-events: none;
     z-index: 4;
-}
-.h-add {
-    top: 0;
     background: linear-gradient(180deg, rgba(30, 170, 58, 0.6) 0%, transparent 100%);
     border-radius: 14px 14px 0 0;
 }
-.h-sub {
-    bottom: 0;
-    background: linear-gradient(0deg, rgba(224, 48, 48, 0.6) 0%, transparent 100%);
-    border-radius: 0 0 14px 14px;
-}
-
-/* Visual cues (+1 / -1 in corner) */
-.a-add, .a-sub {
-    position: absolute;
-    right: 14px;
-    font-size: clamp(1rem, 2.2vw, 1.8rem);
-    opacity: 0.2;
-    z-index: 5;
-    pointer-events: none;
-    transition: opacity 0.2s;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-}
-.a-add { top: 12px; }
-.a-sub { bottom: 12px; }
 
 /* Card J1 ACTIVO (Premium High Contrast White/Cyan) */
 .cj.ac1 {
@@ -432,32 +398,6 @@ html, body {
     border-bottom: 1px solid rgba(33, 133, 244, 0.12);
 }
 
-.cj.ac1 .a-add, .cj.ac1 .a-sub {
-    opacity: 0.8;
-    color: #0b376b;
-}
-
-/* Card J1 INACTIVO (Dark Blue) */
-.cj.in1 {
-    background: #0a1220;
-    border-color: #121e33;
-}
-.cj.in1 .cn, .cj.in1 .cpts {
-    color: #e5efff;
-}
-.cj.in1 .cst {
-    background: rgba(0, 0, 0, 0.25);
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-}
-.cj.in1 .sv { color: #82a8db; }
-.cj.in1 .sl { color: var(--gray); }
-.cj.in1 .chd {
-    background: rgba(0, 0, 0, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-.cj.in1 .z-add, .cj.in1 .z-sub { pointer-events: none; }
-
 /* Card J2 ACTIVO (Premium High Contrast Yellow/Gold) */
 .cj.ac2 {
     background: var(--gold);
@@ -477,32 +417,6 @@ html, body {
     background: rgba(0, 0, 0, 0.04);
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
-
-.cj.ac2 .a-add, .cj.ac2 .a-sub {
-    opacity: 0.8;
-    color: #3d2c00;
-}
-
-/* Card J2 INACTIVO (Dark Gold tint) */
-.cj.in2 {
-    background: #0a1220;
-    border-color: #121e33;
-}
-.cj.in2 .cn, .cj.in2 .cpts {
-    color: var(--gold);
-}
-.cj.in2 .cst {
-    background: rgba(0, 0, 0, 0.25);
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-}
-.cj.in2 .sv { color: #c49d31; }
-.cj.in2 .sl { color: var(--gray); }
-.cj.in2 .chd {
-    background: rgba(0, 0, 0, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-.cj.in2 .z-add, .cj.in2 .z-sub { pointer-events: none; }
 
 .cj .chd {
     display: flex;
@@ -1256,7 +1170,7 @@ canvas.fcv {
 .kpad-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(7, 1fr);
     gap: 8px;
     flex: 1;
     min-height: 0;
@@ -1294,14 +1208,28 @@ canvas.fcv {
     background: #2b0f11;
 }
 
-.kbtn-ok {
-    background: linear-gradient(180deg, #144b24 0%, #0c3318 100%);
-    border-color: rgba(40, 167, 69, 0.3);
-    color: #63e6be;
+.kbtn-left {
+    background: linear-gradient(180deg, #1b3d6b 0%, #0c2340 100%);
+    border-color: rgba(33, 133, 244, 0.3);
+    color: #63b3ed;
     font-weight: 900;
+    font-size: clamp(1.4rem, 5vh, 2rem);
 }
-.kbtn-ok:active {
-    background: #0c3318;
+.kbtn-left:active {
+    background: #0c2340;
+    border-color: var(--blue2);
+}
+
+.kbtn-right {
+    background: linear-gradient(180deg, #573f00 0%, #302300 100%);
+    border-color: rgba(242, 192, 55, 0.3);
+    color: #fbd38d;
+    font-weight: 900;
+    font-size: clamp(1.4rem, 5vh, 2rem);
+}
+.kbtn-right:active {
+    background: #302300;
+    border-color: var(--gold);
 }
 
 </style>
@@ -1361,12 +1289,7 @@ canvas.fcv {
             <!-- Columna Jugador 1 (Blanca) -->
             <div class="col-side">
                 <div id="c1" class="cj ac1">
-                    <div class="z-add" onclick="cardClic(1, 1)"></div>
-                    <div class="z-sub" onclick="cardClic(1, -1)"></div>
                     <div class="h-add" id="ha1"></div>
-                    <div class="h-sub" id="hs1"></div>
-                    <div class="a-add">+1</div>
-                    <div class="a-sub">−1</div>
                     <div class="chd">
                         <div class="cn" id="jn1">JUGADOR A</div>
                     </div>
@@ -1407,8 +1330,9 @@ canvas.fcv {
                         <button class="kbtn" onclick="kpPress(8)">8</button>
                         <button class="kbtn" onclick="kpPress(9)">9</button>
                         <button class="kbtn" onclick="kpPress(0)">0</button>
-                        <button class="kbtn kbtn-c" onclick="kpClear()">C</button>
-                        <button class="kbtn kbtn-ok" onclick="kpApprove()">OK</button>
+                        <button class="kbtn kbtn-c" style="grid-column: span 2;" onclick="kpClear()">C</button>
+                        <button class="kbtn kbtn-left" onclick="kpSubmitLeft()">◀</button>
+                        <button class="kbtn kbtn-right" onclick="kpSubmitRight()">▶</button>
                     </div>
                 </div>
                 
@@ -1421,13 +1345,8 @@ canvas.fcv {
 
             <!-- Columna Jugador 2 (Amarilla) -->
             <div class="col-side">
-                <div id="c2" class="cj in2">
-                    <div class="z-add" onclick="cardClic(2, 1)"></div>
-                    <div class="z-sub" onclick="cardClic(2, -1)"></div>
+                <div id="c2" class="cj ac2">
                     <div class="h-add" id="ha2"></div>
-                    <div class="h-sub" id="hs2"></div>
-                    <div class="a-add">+1</div>
-                    <div class="a-sub">−1</div>
                     <div class="chd">
                         <div class="cn" id="jn2">JUGADOR B</div>
                     </div>
@@ -1481,11 +1400,9 @@ let gameState = {
     
     // Partida en juego
     play: {
-        activePlayer: 1, // 1 o 2
         scores: [0, 0],
         innings: 1,
         seriesMax: [0, 0],
-        currentRun: 0,
         inningHistory: [], // [{inning: 1, j1Run: 3, j2Run: 1, j1Score: 3, j2Score: 1}, ...]
         contrasalida: false,
         finPartidaMotivo: '' // 'distancia', 'entradas', 'empate'
@@ -1605,11 +1522,9 @@ function iniciarPartida() {
     
     // Inicializar estado de juego
     gameState.fase = 'playing';
-    gameState.play.activePlayer = 1;
     gameState.play.scores = [0, 0];
     gameState.play.innings = 1;
     gameState.play.seriesMax = [0, 0];
-    gameState.play.currentRun = 0;
     gameState.play.inningHistory = [];
     gameState.play.contrasalida = false;
     gameState.play.finPartidaMotivo = '';
@@ -1662,9 +1577,11 @@ function updateScoreboardUI() {
     // Entrada actual
     document.getElementById('j-inn').textContent = p.innings;
     
-    // Promedios y Series Max
-    const avg1 = p.scores[0] / Math.max(1, p.activePlayer === 1 ? p.innings : p.innings - 1);
-    const avg2 = p.scores[1] / Math.max(1, p.activePlayer === 2 ? p.innings : p.innings);
+    // Promedios y Series Max (J1 respecto a la entrada actual, J2 respecto a entradas completadas p.innings - 1)
+    const turns1 = p.innings;
+    const turns2 = Math.max(1, p.innings - 1);
+    const avg1 = p.scores[0] / turns1;
+    const avg2 = p.scores[1] / turns2;
     
     document.getElementById('jpr1').textContent = avg1.toFixed(3);
     document.getElementById('jpr2').textContent = avg2.toFixed(3);
@@ -1672,19 +1589,18 @@ function updateScoreboardUI() {
     document.getElementById('jmx1').textContent = p.seriesMax[0];
     document.getElementById('jmx2').textContent = p.seriesMax[1];
     
-    // Actualizar tarjetas de jugador activo (clases CSS)
+    // Ambos marcadores siempre están en modo activo (Blanca y Amarilla)
     const card1 = document.getElementById('c1');
     const card2 = document.getElementById('c2');
+    card1.className = 'cj ac1';
+    card2.className = 'cj ac2';
     
-    if (p.activePlayer === 1) {
-        card1.className = 'cj ac1';
-        card2.className = 'cj in2';
-        document.getElementById('j-msg-main').textContent = p.contrasalida ? 'CONTRASALIDA' : '';
-        document.getElementById('j-msg-sub').textContent = '';
+    // Notificación de contrasalida
+    if (p.contrasalida) {
+        document.getElementById('j-msg-main').textContent = 'CONTRASALIDA';
+        document.getElementById('j-msg-sub').textContent = `${gameState.config.n2.toUpperCase()} DEBE JUGAR`;
     } else {
-        card1.className = 'cj in1';
-        card2.className = 'cj ac2';
-        document.getElementById('j-msg-main').textContent = p.contrasalida ? 'CONTRASALIDA' : '';
+        document.getElementById('j-msg-main').textContent = '';
         document.getElementById('j-msg-sub').textContent = '';
     }
     
@@ -1692,129 +1608,7 @@ function updateScoreboardUI() {
     document.getElementById('i-undo').style.opacity = undoStack.length > 1 ? "1" : "0.5";
 }
 
-function cardClic(playerIdx, delta) {
-    const p = gameState.play;
-    
-    // Solo puede puntuar el jugador activo
-    if (playerIdx !== p.activePlayer) return;
-    
-    const targetIdx = playerIdx - 1;
-    let oldScore = p.scores[targetIdx];
-    let newScore = oldScore + delta;
-    
-    if (newScore < 0) return;
-    
-    // Actualizar puntuación
-    p.scores[targetIdx] = newScore;
-    
-    // Actualizar serie del turno actual
-    p.currentRun = Math.max(0, p.currentRun + delta);
-    
-    // Validar serie máxima
-    if (p.currentRun > p.seriesMax[targetIdx]) {
-        p.seriesMax[targetIdx] = p.currentRun;
-    }
-    
-    // Animación de flash (touch feedback)
-    const flashEl = delta > 0 ? 
-        document.getElementById(`ha${playerIdx}`) : 
-        document.getElementById(`hs${playerIdx}`);
-        
-    flashEl.style.opacity = '1';
-    setTimeout(() => {
-        flashEl.style.opacity = '0';
-    }, 150);
-    
-    playBeep(delta > 0 ? 900 : 450, 0.08);
-    
-    // Comprobar condiciones de victoria en tiempo real
-    comprobarPuntoObjetivo(playerIdx);
-    
-    saveState();
-    updateScoreboardUI();
-}
 
-function comprobarPuntoObjetivo(playerIdx) {
-    const p = gameState.play;
-    const target = gameState.config.targetPoints;
-    
-    if (p.scores[playerIdx - 1] >= target) {
-        if (playerIdx === 1) {
-            // El Jugador 1 ha llegado a la distancia. Su turno finaliza inmediatamente.
-            // Si el Jugador 2 aún no ha completado su turno de esa entrada, se concede la CONTRASALIDA.
-            if (!p.contrasalida) {
-                p.contrasalida = true;
-                
-                // Registramos la serie de J1 para esta entrada antes de cambiar
-                registrarSerieHistorial(1, p.currentRun);
-                p.currentRun = 0;
-                
-                // Cambiar el turno a J2 para la contrasalida
-                p.activePlayer = 2;
-                
-                playBeep(1000, 0.4);
-                
-                // Forzamos actualización de pantalla y mostramos alerta
-                document.getElementById('j-msg-main').textContent = 'CONTRASALIDA';
-                document.getElementById('j-msg-sub').textContent = `${gameState.config.n2.toUpperCase()} (SALIDA)`;
-                
-                // Notificación visual en el centro del marcador
-                console.log("Contrasalida concedida para J2");
-            }
-        } else {
-            // El Jugador 2 ha llegado a la distancia.
-            // Si el Jugador 2 llega a la distancia, y el Jugador 1 ya había llegado, es un empate.
-            // Si el Jugador 2 llega a la distancia, y el Jugador 1 no había llegado, el Jugador 2 gana inmediatamente.
-            p.finPartidaMotivo = p.scores[0] >= target ? 'empate' : 'distancia';
-            finalizarPartida();
-        }
-    }
-}
-
-function cambioTurno() {
-    const p = gameState.play;
-    
-    playBeep(650, 0.15);
-    
-    // Registrar serie en el historial antes de cambiar
-    registrarSerieHistorial(p.activePlayer, p.currentRun);
-    
-    // Si el Jugador activo era el 2 (Amarilla), se completa la entrada
-    if (p.activePlayer === 2) {
-        // ¿Se ha completado el límite de entradas o se ha jugado la contrasalida?
-        if (p.innings >= gameState.config.maxInnings || p.contrasalida) {
-            if (p.scores[0] === p.scores[1]) {
-                p.finPartidaMotivo = 'empate';
-            } else if (p.contrasalida) {
-                p.finPartidaMotivo = 'distancia';
-            } else {
-                p.finPartidaMotivo = 'entradas';
-            }
-            finalizarPartida();
-            return;
-        }
-        
-        // Incrementar entrada
-        p.innings++;
-        p.activePlayer = 1;
-    } else {
-        // Si el Jugador activo era el J1 (Blanca)
-        // Si estábamos en contrasalida y el J1 falla (cambio de turno), se acaba la partida porque J2 ya no tiene turnos
-        if (p.contrasalida) {
-            p.finPartidaMotivo = 'distancia';
-            finalizarPartida();
-            return;
-        }
-        
-        p.activePlayer = 2;
-    }
-    
-    // Resetear valores de turno
-    p.currentRun = 0;
-    
-    saveState();
-    updateScoreboardUI();
-}
 
 function registrarSerieHistorial(playerIdx, run) {
     const p = gameState.play;
@@ -1849,9 +1643,6 @@ function registrarSerieHistorial(playerIdx, run) {
 
 function finalizarPartida() {
     gameState.fase = 'finished';
-    
-    // Registrar el último turno activo en el historial si corresponde
-    registrarSerieHistorial(gameState.play.activePlayer, gameState.play.currentRun);
     
     // Pitido de final de partida alegre (escala ascendente)
     playBeep(520, 0.15);
@@ -2035,49 +1826,107 @@ function kpClear() {
     playBeep(400, 0.05);
 }
 
-function kpApprove() {
+function kpSubmitLeft() {
     initAudio();
     let val = parseInt(keypadInput) || 0;
-    
     const p = gameState.play;
-    const activePlayer = p.activePlayer;
     
-    // 1. Anotar puntos si es mayor a 0
+    // 1. Guardar estado para deshacer
+    saveState();
+    
+    // 2. Sumar puntos a Jugador A
+    p.scores[0] += val;
+    
+    // 3. Registrar serie en el historial para la entrada actual
+    registrarSerieHistorial(1, val);
+    
+    // 4. Serie máxima
+    if (val > p.seriesMax[0]) {
+        p.seriesMax[0] = val;
+    }
+    
+    // 5. Sonido y efecto visual
     if (val > 0) {
-        const targetIdx = activePlayer - 1;
-        p.scores[targetIdx] += val;
-        p.currentRun = Math.max(0, p.currentRun + val);
-        if (p.currentRun > p.seriesMax[targetIdx]) {
-            p.seriesMax[targetIdx] = p.currentRun;
-        }
-        
-        // Efecto visual flash
-        const flashEl = document.getElementById(`ha${activePlayer}`);
+        playBeep(900, 0.12);
+        const flashEl = document.getElementById('ha1');
         if (flashEl) {
             flashEl.style.opacity = '1';
-            setTimeout(() => {
-                flashEl.style.opacity = '0';
-            }, 150);
+            setTimeout(() => { flashEl.style.opacity = '0'; }, 150);
         }
-        
-        playBeep(900, 0.12);
-        
-        // Validar distancia/contrasalida
-        comprobarPuntoObjetivo(activePlayer);
+    } else {
+        playBeep(450, 0.08);
     }
     
-    // 2. Limpiar visor
+    // 6. Verificar si J1 llegó a los puntos objetivo (concede contrasalida)
+    const target = gameState.config.targetPoints;
+    if (p.scores[0] >= target && !p.contrasalida) {
+        p.contrasalida = true;
+        playBeep(1000, 0.4);
+    }
+    
+    // 7. Limpiar visor y actualizar interfaz
     kpClear();
+    updateScoreboardUI();
+}
+
+function kpSubmitRight() {
+    initAudio();
+    let val = parseInt(keypadInput) || 0;
+    const p = gameState.play;
     
-    // 3. Cambiar de turno si la partida sigue activa y no se forzó cambio automático (ej. contrasalida)
-    if (gameState.fase === 'playing') {
-        if (p.activePlayer === activePlayer) {
-            cambioTurno();
-        } else {
-            saveState();
-            updateScoreboardUI();
+    // 1. Guardar estado para deshacer
+    saveState();
+    
+    // 2. Sumar puntos a Jugador B
+    p.scores[1] += val;
+    
+    // 3. Registrar serie en el historial para la entrada actual
+    registrarSerieHistorial(2, val);
+    
+    // 4. Serie máxima
+    if (val > p.seriesMax[1]) {
+        p.seriesMax[1] = val;
+    }
+    
+    // 5. Sonido y efecto visual
+    if (val > 0) {
+        playBeep(900, 0.12);
+        const flashEl = document.getElementById('ha2');
+        if (flashEl) {
+            flashEl.style.opacity = '1';
+            setTimeout(() => { flashEl.style.opacity = '0'; }, 150);
+        }
+    } else {
+        playBeep(450, 0.08);
+    }
+    
+    // 6. Comprobar condiciones de finalización de partida
+    const target = gameState.config.targetPoints;
+    
+    if (p.scores[1] >= target || p.contrasalida) {
+        if (p.scores[0] >= target && p.scores[1] >= target) {
+            p.finPartidaMotivo = p.scores[0] === p.scores[1] ? 'empate' : 'distancia';
+            finalizarPartida();
+            return;
+        } else if (p.scores[1] >= target && p.scores[0] < target) {
+            // J2 llega a la distancia y J1 no
+            p.finPartidaMotivo = 'distancia';
+            finalizarPartida();
+            return;
+        } else if (p.contrasalida && p.scores[1] < target) {
+            // J1 llegó a la distancia, J2 jugó su contrasalida y no le alcanzó
+            p.finPartidaMotivo = 'distancia';
+            finalizarPartida();
+            return;
         }
     }
+    
+    // 7. Sumar entrada (incrementar entrada)
+    p.innings++;
+    
+    // 8. Limpiar visor y actualizar interfaz
+    kpClear();
+    updateScoreboardUI();
 }
 
 function clearInput(inputId) {
