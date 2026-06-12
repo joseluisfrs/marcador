@@ -776,37 +776,26 @@ canvas.fcv {
     inset: 0;
     background: rgba(3, 5, 8, 0.98);
     z-index: 9500;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 15px 14px;
     overflow: hidden; /* Evitamos scroll del modal principal */
+    padding: 10px;
 }
 #m-acta.on { display: flex; }
 
-.acta-top {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 12px;
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 720px;
-}
 .ab {
     border: none;
     border-radius: 10px;
-    padding: 14px 28px;
+    padding: 12px 24px;
     font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
     letter-spacing: 1px;
-    flex: 1;
     color: var(--white);
     transition: all 0.15s;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.ab-p { background: var(--blue); }
-.ab-p:hover { background: var(--blue2); }
 .ab-c { background: #880808; }
 .ab-c:hover { background: #a81010; }
 
@@ -814,9 +803,9 @@ canvas.fcv {
 #acta-scroll-container {
     width: 100%;
     max-width: 720px;
-    flex: 1;
+    height: 96vh;
     overflow-y: auto;
-    padding-bottom: 24px;
+    border-radius: 12px;
 }
 
 #acta-body {
@@ -1015,7 +1004,7 @@ canvas.fcv {
         margin: 0 !important;
     }
     
-    .acta-top { 
+    .acta-top, .acta-side-bar, .acta-header .ab-c { 
         display: none !important; 
     }
     
@@ -1371,13 +1360,9 @@ canvas.fcv {
          MODAL 3 — ACTA OFICIAL IMPRIMIBLE
     ══════════════════════════════════════════════ -->
     <div id="m-acta" class="modal">
-        <div class="acta-top">
-            <button class="ab ab-p" onclick="imprimirActa()">🖨 IMPRIMIR ACTA (A4)</button>
-            <button class="ab ab-c" onclick="cerrarActaYNuevaPartida()">🏁 NUEVA PARTIDA</button>
-        </div>
         <div id="acta-scroll-container">
             <div id="acta-body">
-                <!-- El contenido del acta se generará dinámicamente con JS para reflejar todos los datos e imágenes de firmas -->
+                <!-- El contenido del acta se generará dinámicamente con JS -->
             </div>
         </div>
     </div>
@@ -1789,25 +1774,27 @@ function finalizarPartidaYMostrarActa() {
     const avg1 = p.scores[0] / totInnings;
     const avg2 = p.scores[1] / totInnings;
     
+    // Efectividad = (entradas en las que hace al menos un punto) / (total de entradas)
+    // Entradas anotando = totalInnings - blankInnings
+    const efec1 = ((totInnings - stats1.blankInnings) / totInnings) * 100;
+    const efec2 = ((totInnings - stats2.blankInnings) / totInnings) * 100;
+    
     const htmlActa = `
-        <div class="acta-header">
-            <h1>ACTA OFICIAL DE PARTIDO</h1>
-            <p>${gameState.config.club.toUpperCase()}</p>
+        <div class="acta-header" style="border-bottom:1px solid #333; padding-bottom:6px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h1 style="font-size:1.2rem; margin:0; display:inline-block; vertical-align:middle; font-family:'Oswald',sans-serif; color:#111a2e; text-transform:uppercase;">ACTA OFICIAL</h1>
+                <span style="font-size:0.85rem; margin-left:12px; font-weight:700; color:#555; font-family:'Oswald',sans-serif; text-transform:uppercase;">${gameState.config.club.toUpperCase()}</span>
+            </div>
+            <button class="ab ab-c" onclick="cerrarActaYNuevaPartida()" style="width:auto; padding:6px 14px; font-size:0.8rem; margin:0; line-height:1.2;">🏁 NUEVA PARTIDA</button>
         </div>
         
-        <div class="acta-meta">
-            <div><span>Fecha:</span> ${fecha}</div>
-            <div><span>Resultado:</span> ${motivoTexto}</div>
-            <div><span>Entradas totales:</span> ${totInnings}</div>
-        </div>
-        
-        <table class="acta-tbl">
+        <table class="acta-tbl" style="margin-bottom:16px;">
             <thead>
                 <tr>
                     <th>Jugador</th>
                     <th>Puntos</th>
                     <th>Entradas</th>
-                    <th>Promedio General</th>
+                    <th>Promedio</th>
                     <th>Efectividad</th>
                     <th>Serie Máx.</th>
                 </tr>
@@ -1818,7 +1805,7 @@ function finalizarPartidaYMostrarActa() {
                     <td><b>${p.scores[0]}</b></td>
                     <td>${totInnings}</td>
                     <td><b>${avg1.toFixed(3)}</b></td>
-                    <td><b>${( (totInnings - stats1.blankInnings) / totInnings * 100 ).toFixed(1)}%</b></td>
+                    <td><b>${efec1.toFixed(1)}%</b></td>
                     <td>${p.seriesMax[0]}</td>
                 </tr>
                 <tr style="border-bottom: 2px solid #333;">
@@ -1826,7 +1813,7 @@ function finalizarPartidaYMostrarActa() {
                     <td><b>${p.scores[1]}</b></td>
                     <td>${totInnings}</td>
                     <td><b>${avg2.toFixed(3)}</b></td>
-                    <td><b>${( (totInnings - stats2.blankInnings) / totInnings * 100 ).toFixed(1)}%</b></td>
+                    <td><b>${efec2.toFixed(1)}%</b></td>
                     <td>${p.seriesMax[1]}</td>
                 </tr>
             </tbody>
@@ -1834,17 +1821,6 @@ function finalizarPartidaYMostrarActa() {
         
         <h3 style="font-family:'Oswald',sans-serif; margin-bottom:10px; font-size:1.1rem; text-transform:uppercase; color:#111a2e">Estadísticas Detalladas de Tacadas</h3>
         ${statsTableHTML}
-        
-        <div class="acta-firmas">
-            <div class="acta-firma-box">
-                <div style="height:70px; border-bottom:1px solid #999; width: 200px; margin: 0 auto;"></div>
-                <div class="acta-firma-lbl">Firma J1<br><b>${gameState.config.n1.toUpperCase()}</b></div>
-            </div>
-            <div class="acta-firma-box">
-                <div style="height:70px; border-bottom:1px solid #999; width: 200px; margin: 0 auto;"></div>
-                <div class="acta-firma-lbl">Firma J2<br><b>${gameState.config.n2.toUpperCase()}</b></div>
-            </div>
-        </div>
     `;
     
     document.getElementById('acta-body').innerHTML = htmlActa;
