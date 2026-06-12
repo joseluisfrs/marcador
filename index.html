@@ -311,7 +311,7 @@ html, body {
 }
 
 #j-dist {
-    font-size: clamp(2.5rem, 6vw, 4.2rem);
+    font-size: clamp(1.8rem, 4.5vw, 3.2rem);
     font-weight: 700;
     color: var(--gold);
     font-family: 'Oswald', sans-serif;
@@ -560,7 +560,7 @@ html, body {
     text-transform: uppercase;
 }
 .ent-v {
-    font-size: clamp(2rem, 7vh, 3.2rem);
+    font-size: clamp(2.4rem, 8.5vh, 4rem);
     font-weight: 700;
     font-family: 'Oswald', sans-serif;
     padding: 2px 0;
@@ -1257,7 +1257,7 @@ canvas.fcv {
             
             <span class="cfg-lbl" id="i-pts">DISTANCIA</span>
             <div class="cfg-in-wrapper">
-                <input class="cfg-in" type="number" id="cfg-pts" value="400" min="1" max="400">
+                <input class="cfg-in" type="number" id="cfg-pts" value="400" min="1" max="400" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-pts')">&times;</button>
             </div>
             
