@@ -1282,6 +1282,19 @@ canvas.fcv {
     border-color: var(--gold);
 }
 
+/* Infinity Symbol Premium styling */
+.infinity-symbol {
+    font-size: clamp(1.3rem, 3.2vw, 2.3rem);
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(242, 192, 55, 0.6);
+    font-family: system-ui, -apple-system, Arial, sans-serif;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 0.8;
+    transform: scale(1.4) translateY(-1px);
+}
+
 </style>
 </head>
 <body>
@@ -1305,9 +1318,9 @@ canvas.fcv {
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-n2')">&times;</button>
             </div>
             
-            <span class="cfg-lbl" id="i-pts">DISTANCIA (0 para infinito)</span>
+            <span class="cfg-lbl" id="i-pts">DISTANCIA (vacío para infinito)</span>
             <div class="cfg-in-wrapper">
-                <input class="cfg-in" type="number" id="cfg-pts" value="0" min="0" max="400" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
+                <input class="cfg-in" type="number" id="cfg-pts" value="" min="0" max="400" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-pts')">&times;</button>
             </div>
             
@@ -1533,17 +1546,12 @@ function deshacer() {
         return;
     }
     
-    // Descartamos el estado actual
-    undoStack.pop();
-    
-    // Recuperamos el estado anterior
-    const prevStateStr = undoStack[undoStack.length - 1];
+    // Recuperamos y removemos el estado superior de la pila
+    const prevStateStr = undoStack.pop();
     const prevState = JSON.parse(prevStateStr);
     
-    // Restauramos
+    // Restauramos el estado de juego
     gameState.play = prevState.play;
-    
-
     
     playBeep(600, 0.15);
     updateScoreboardUI();
@@ -1592,7 +1600,7 @@ function iniciarPartida() {
     
     // Configurar cabeceras y textos del tablero
     document.getElementById('j-club').textContent = gameState.config.club.toUpperCase();
-    document.getElementById('j-dist').textContent = gameState.config.targetPoints === 0 ? '∞' : gameState.config.targetPoints;
+    document.getElementById('j-dist').innerHTML = gameState.config.targetPoints === 0 ? '<span class="infinity-symbol">∞</span>' : gameState.config.targetPoints;
     
     document.getElementById('jn1').textContent = gameState.config.n1.toUpperCase();
     document.getElementById('jn2').textContent = gameState.config.n2.toUpperCase();
@@ -1643,7 +1651,7 @@ function updateScoreboardUI() {
     
     // Entrada actual
     document.getElementById('j-inn').textContent = p.innings;
-    document.getElementById('j-dist').textContent = gameState.config.targetPoints === 0 ? '∞' : gameState.config.targetPoints;
+    document.getElementById('j-dist').innerHTML = gameState.config.targetPoints === 0 ? '<span class="infinity-symbol">∞</span>' : gameState.config.targetPoints;
     
     // Promedios y Series Max (J1 respecto a la entrada actual, J2 respecto a entradas completadas p.innings - 1)
     if (gameState.config.useInnings) {
@@ -1945,6 +1953,13 @@ function confirmarFinalizarPartida() {
 }
 
 function nuevaPartida() {
+    // Restablecer valores de configuración por defecto
+    const ptsInput = document.getElementById('cfg-pts');
+    if (ptsInput) ptsInput.value = "";
+    
+    const useInningsInput = document.getElementById('cfg-use-innings');
+    if (useInningsInput) useInningsInput.checked = true;
+    
     gameState.fase = 'config';
     showScreen('p-cfg');
     playBeep(500, 0.15);
@@ -1977,6 +1992,8 @@ function kpClear() {
 function kpSubmitLeft() {
     initAudio();
     let val = parseInt(keypadInput) || 0;
+    kpClear(); // Traspasar y borrar la anotación inmediatamente
+    
     const p = gameState.play;
     
     // 1. Guardar estado para deshacer
@@ -2014,14 +2031,15 @@ function kpSubmitLeft() {
         playBeep(1000, 0.4);
     }
     
-    // 7. Limpiar visor y actualizar interfaz
-    kpClear();
+    // 7. Actualizar interfaz
     updateScoreboardUI();
 }
 
 function kpSubmitRight() {
     initAudio();
     let val = parseInt(keypadInput) || 0;
+    kpClear(); // Traspasar y borrar la anotación inmediatamente
+    
     const p = gameState.play;
     
     // 1. Guardar estado para deshacer
@@ -2078,8 +2096,7 @@ function kpSubmitRight() {
         p.innings++;
     }
     
-    // 8. Limpiar visor y actualizar interfaz
-    kpClear();
+    // 8. Actualizar interfaz
     updateScoreboardUI();
 }
 
