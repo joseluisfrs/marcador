@@ -252,6 +252,63 @@ html, body {
     box-shadow: 0 6px 25px rgba(33, 133, 244, 0.5);
 }
 
+/* Custom Switch Toggle Style */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #070b13;
+    transition: .3s;
+    border: 1px solid #1b2b47;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--gray);
+    transition: .3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+input:checked + .slider {
+    background-color: var(--blue2);
+    border-color: #2185f4;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+    background-color: var(--white);
+}
+
+.slider.round {
+    border-radius: 28px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
 /* ══════════════════════════════════════════════
    P3 — JUEGO (GAME BOARD)
 ══════════════════════════════════════════════ */
@@ -1248,10 +1305,18 @@ canvas.fcv {
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-n2')">&times;</button>
             </div>
             
-            <span class="cfg-lbl" id="i-pts">DISTANCIA</span>
+            <span class="cfg-lbl" id="i-pts">DISTANCIA (0 para infinito)</span>
             <div class="cfg-in-wrapper">
-                <input class="cfg-in" type="number" id="cfg-pts" value="400" min="1" max="400" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
+                <input class="cfg-in" type="number" id="cfg-pts" value="0" min="0" max="400" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-pts')">&times;</button>
+            </div>
+            
+            <div class="cfg-row-toggle" style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
+                <span class="cfg-lbl" style="margin: 0; padding: 0;">¿CONTAR ENTRADAS?</span>
+                <label class="switch">
+                    <input type="checkbox" id="cfg-use-innings" checked>
+                    <span class="slider round"></span>
+                </label>
             </div>
             
             <button class="cfg-go" id="i-emp" onclick="iniciarPartida()">EMPEZAR PARTIDA ▶</button>
@@ -1288,7 +1353,7 @@ canvas.fcv {
                     </div>
                     <div class="cpts" id="jp1">0</div>
                     <div class="cst">
-                        <div class="si">
+                        <div class="si" id="c1-prom-box">
                             <span class="sl" id="i-prom1">PROMEDIO</span>
                             <span class="sv" id="jpr1">0.000</span>
                         </div>
@@ -1304,7 +1369,7 @@ canvas.fcv {
             <!-- Panel de Control Central -->
             <div id="pc">
                 <!-- Entrada actual -->
-                <div class="ent-b">
+                <div class="ent-b" id="j-inn-box">
                     <div class="ent-h" id="i-entrada">ENTRADA</div>
                     <div class="ent-v" id="j-inn">1</div>
                 </div>
@@ -1345,7 +1410,7 @@ canvas.fcv {
                     </div>
                     <div class="cpts" id="jp2">0</div>
                     <div class="cst">
-                        <div class="si">
+                        <div class="si" id="c2-prom-box">
                             <span class="sl" id="i-prom2">PROMEDIO</span>
                             <span class="sv" id="jpr2">0.000</span>
                         </div>
@@ -1355,7 +1420,7 @@ canvas.fcv {
                         </div>
                     </div>
                 </div>
-                <button class="pcb" id="i-nueva" onclick="confirmarNuevaPartida()">🏁 REINICIAR</button>
+                <button class="pcb" id="i-nueva" onclick="confirmarFinalizarPartida()">🏁 FINALIZAR</button>
             </div>
         </div>
     </div>
@@ -1384,7 +1449,8 @@ let gameState = {
         n1: 'JUGADOR A',
         n2: 'JUGADOR B',
         maxInnings: 9999,
-        targetPoints: 400
+        targetPoints: 0,
+        useInnings: true
     },
     
     // Partida en juego
@@ -1458,11 +1524,11 @@ function saveState() {
     }
     
     // Habilitar/Deshabilitar botón de deshacer en la interfaz
-    document.getElementById('i-undo').style.opacity = undoStack.length > 1 ? "1" : "0.5";
+    document.getElementById('i-undo').style.opacity = undoStack.length > 0 ? "1" : "0.5";
 }
 
 function deshacer() {
-    if (undoStack.length <= 1) {
+    if (undoStack.length === 0) {
         playBeep(300, 0.2); // Pitido de error
         return;
     }
@@ -1506,10 +1572,14 @@ function iniciarPartida() {
     gameState.config.club = 'Club Billar SANTS';
     gameState.config.n1 = document.getElementById('cfg-n1').value.trim() || 'JUGADOR A';
     gameState.config.n2 = document.getElementById('cfg-n2').value.trim() || 'JUGADOR B';
-    let pts = parseInt(document.getElementById('cfg-pts').value) || 400;
+    
+    let pts = parseInt(document.getElementById('cfg-pts').value);
+    if (isNaN(pts)) pts = 0;
     if (pts > 400) pts = 400;
-    if (pts < 1) pts = 1;
+    if (pts < 0) pts = 0;
     gameState.config.targetPoints = pts;
+    
+    gameState.config.useInnings = document.getElementById('cfg-use-innings').checked;
     
     // Inicializar estado de juego
     gameState.fase = 'playing';
@@ -1522,14 +1592,20 @@ function iniciarPartida() {
     
     // Configurar cabeceras y textos del tablero
     document.getElementById('j-club').textContent = gameState.config.club.toUpperCase();
-    document.getElementById('j-dist').textContent = gameState.config.targetPoints;
+    document.getElementById('j-dist').textContent = gameState.config.targetPoints === 0 ? '∞' : gameState.config.targetPoints;
     
     document.getElementById('jn1').textContent = gameState.config.n1.toUpperCase();
     document.getElementById('jn2').textContent = gameState.config.n2.toUpperCase();
     
-    // Guardar estado inicial en la pila de deshacer
+    // Mostrar/ocultar promedios y contador de entrada central según configuración
+    const displayVal = gameState.config.useInnings ? '' : 'none';
+    document.getElementById('c1-prom-box').style.display = displayVal;
+    document.getElementById('c2-prom-box').style.display = displayVal;
+    document.getElementById('j-inn-box').style.display = displayVal;
+    
+    // Inicializar pila de deshacer vacía
     undoStack = [];
-    saveState();
+    document.getElementById('i-undo').style.opacity = "0.5";
     
     // Mostrar pantalla de juego
     showScreen('p-jg');
@@ -1567,15 +1643,18 @@ function updateScoreboardUI() {
     
     // Entrada actual
     document.getElementById('j-inn').textContent = p.innings;
+    document.getElementById('j-dist').textContent = gameState.config.targetPoints === 0 ? '∞' : gameState.config.targetPoints;
     
     // Promedios y Series Max (J1 respecto a la entrada actual, J2 respecto a entradas completadas p.innings - 1)
-    const turns1 = p.innings;
-    const turns2 = Math.max(1, p.innings - 1);
-    const avg1 = p.scores[0] / turns1;
-    const avg2 = p.scores[1] / turns2;
-    
-    document.getElementById('jpr1').textContent = avg1.toFixed(3);
-    document.getElementById('jpr2').textContent = avg2.toFixed(3);
+    if (gameState.config.useInnings) {
+        const turns1 = p.innings;
+        const turns2 = Math.max(1, p.innings - 1);
+        const avg1 = p.scores[0] / turns1;
+        const avg2 = p.scores[1] / turns2;
+        
+        document.getElementById('jpr1').textContent = avg1.toFixed(3);
+        document.getElementById('jpr2').textContent = avg2.toFixed(3);
+    }
     
     document.getElementById('jmx1').textContent = p.seriesMax[0];
     document.getElementById('jmx2').textContent = p.seriesMax[1];
@@ -1596,7 +1675,7 @@ function updateScoreboardUI() {
     }
     
     // Actualizar deshabilitado de botones según el estado
-    document.getElementById('i-undo').style.opacity = undoStack.length > 1 ? "1" : "0.5";
+    document.getElementById('i-undo').style.opacity = undoStack.length > 0 ? "1" : "0.5";
 }
 
 
@@ -1784,11 +1863,14 @@ function finalizarPartidaYMostrarActa() {
     const efec2 = ((totInnings - stats2.blankInnings) / totInnings) * 100;
     
     const htmlActa = `
-        <div class="acta-header" style="border-bottom:1px solid #333; padding-bottom:6px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+        <div class="acta-header" style="border-bottom:1px solid #333; padding-bottom:10px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
             <div>
-                <h1 style="font-size:1.2rem; margin:0; display:inline-block; vertical-align:middle; font-family:'Oswald',sans-serif; color:#111a2e; text-transform:uppercase;">ESTADÍSTICAS DE LA PARTIDA</h1>
+                <h1 style="font-size:1.3rem; margin:0; font-family:'Oswald',sans-serif; color:#111a2e; text-transform:uppercase;">ESTADÍSTICAS DE LA PARTIDA</h1>
             </div>
-            <button class="ab ab-c" onclick="cerrarActaYNuevaPartida()" style="width:auto; padding:6px 14px; font-size:0.8rem; margin:0; line-height:1.2;">🏁 NUEVA PARTIDA</button>
+            <div style="display:flex; gap:10px;">
+                <button class="ab ab-c" onclick="cerrarActaYContinuar()" style="background:#17a2b8; color:#fff; padding:8px 16px; font-size:0.9rem; margin:0; line-height:1.2;">▶ CONTINUAR</button>
+                <button class="ab ab-c" onclick="cerrarActaYNuevaPartida()" style="background:#dc3545; color:#fff; padding:8px 16px; font-size:0.9rem; margin:0; line-height:1.2;">🏁 REINICIAR</button>
+            </div>
         </div>
         
         <table class="acta-tbl" style="margin-bottom:16px;">
@@ -1843,9 +1925,22 @@ function cerrarActaYNuevaPartida() {
     nuevaPartida();
 }
 
-function confirmarNuevaPartida() {
-    if (confirm("¿Seguro que deseas reiniciar la partida actual y volver a la configuración? Se perderán todos los datos actuales.")) {
-        nuevaPartida();
+function cerrarActaYContinuar() {
+    document.getElementById('m-acta').classList.remove('on');
+    gameState.config.targetPoints = 0;
+    gameState.fase = 'playing';
+    updateScoreboardUI();
+}
+
+function confirmarFinalizarPartida() {
+    if (gameState.config.useInnings) {
+        if (confirm("¿Deseas finalizar la partida actual y ver las estadísticas?")) {
+            finalizarPartida();
+        }
+    } else {
+        if (confirm("¿Seguro que deseas finalizar la partida actual y volver a la configuración? Se perderán todos los datos actuales.")) {
+            nuevaPartida();
+        }
     }
 }
 
@@ -1891,7 +1986,9 @@ function kpSubmitLeft() {
     p.scores[0] += val;
     
     // 3. Registrar serie en el historial para la entrada actual
-    registrarSerieHistorial(1, val);
+    if (gameState.config.useInnings) {
+        registrarSerieHistorial(1, val);
+    }
     
     // 4. Serie máxima
     if (val > p.seriesMax[0]) {
@@ -1912,7 +2009,7 @@ function kpSubmitLeft() {
     
     // 6. Verificar si J1 llegó a los puntos objetivo (concede contrasalida)
     const target = gameState.config.targetPoints;
-    if (p.scores[0] >= target && !p.contrasalida) {
+    if (target > 0 && p.scores[0] >= target && !p.contrasalida) {
         p.contrasalida = true;
         playBeep(1000, 0.4);
     }
@@ -1934,7 +2031,9 @@ function kpSubmitRight() {
     p.scores[1] += val;
     
     // 3. Registrar serie en el historial para la entrada actual
-    registrarSerieHistorial(2, val);
+    if (gameState.config.useInnings) {
+        registrarSerieHistorial(2, val);
+    }
     
     // 4. Serie máxima
     if (val > p.seriesMax[1]) {
@@ -1956,7 +2055,7 @@ function kpSubmitRight() {
     // 6. Comprobar condiciones de finalización de partida
     const target = gameState.config.targetPoints;
     
-    if (p.scores[1] >= target || p.contrasalida) {
+    if (target > 0 && (p.scores[1] >= target || p.contrasalida)) {
         if (p.scores[0] >= target && p.scores[1] >= target) {
             p.finPartidaMotivo = p.scores[0] === p.scores[1] ? 'empate' : 'distancia';
             finalizarPartida();
@@ -1974,8 +2073,10 @@ function kpSubmitRight() {
         }
     }
     
-    // 7. Sumar entrada (incrementar entrada)
-    p.innings++;
+    // 7. Sumar entrada (incrementar entrada) si está configurado
+    if (gameState.config.useInnings) {
+        p.innings++;
+    }
     
     // 8. Limpiar visor y actualizar interfaz
     kpClear();
