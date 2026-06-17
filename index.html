@@ -507,9 +507,9 @@ input:checked + .slider:before {
 
 /* Main Points Display */
 .cj .cpts {
-    font-size: clamp(8rem, 42vh, 24rem);
+    font-size: clamp(9.5rem, 48vh, 28rem);
     font-weight: 700;
-    line-height: 0.85;
+    line-height: 0.8;
     text-align: center;
     flex: 1;
     display: flex;
@@ -521,7 +521,7 @@ input:checked + .slider:before {
     z-index: 1;
 }
 .cj .cpts.cpts-3d {
-    font-size: clamp(6rem, 30vh, 17rem);
+    font-size: clamp(7rem, 35vh, 19rem);
 }
 
 /* Stats Section */
@@ -1323,6 +1323,55 @@ canvas.fcv {
     margin-left: 4px;
 }
 
+/* Historial de Tacadas Recientes */
+.cruns-hist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    min-height: 32px;
+    flex-shrink: 0;
+}
+.cj.ac1 .cruns-hist {
+    background: rgba(33, 133, 244, 0.03);
+    border-top: 1px dashed rgba(33, 133, 244, 0.08);
+}
+.cj.ac2 .cruns-hist {
+    background: rgba(0, 0, 0, 0.03);
+    border-top: 1px dashed rgba(0, 0, 0, 0.06);
+}
+.crun-item {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(0.9rem, 2vh, 1.25rem);
+    font-weight: 700;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.cj.ac1 .crun-item {
+    background: rgba(11, 55, 107, 0.06);
+    color: #0b376b;
+    border-color: rgba(11, 55, 107, 0.15);
+}
+.cj.ac2 .crun-item {
+    background: rgba(61, 44, 0, 0.06);
+    color: #3d2c00;
+    border-color: rgba(61, 44, 0, 0.15);
+}
+.crun-item.crun-empty {
+    opacity: 0.35;
+    font-weight: 300;
+}
+
 </style>
 </head>
 <body>
@@ -1403,6 +1452,7 @@ canvas.fcv {
                         <div class="cn" id="jn1">JUGADOR A</div>
                     </div>
                     <div class="cpts" id="jp1">0</div>
+                    <div class="cruns-hist" id="cruns-hist-1"></div>
                     <div class="cst">
                         <div class="si" id="c1-prom-box">
                             <span class="sl" id="i-prom1">PROMEDIO</span>
@@ -1460,6 +1510,7 @@ canvas.fcv {
                         <div class="cn" id="jn2">JUGADOR B</div>
                     </div>
                     <div class="cpts" id="jp2">0</div>
+                    <div class="cruns-hist" id="cruns-hist-2"></div>
                     <div class="cst">
                         <div class="si" id="c2-prom-box">
                             <span class="sl" id="i-prom2">PROMEDIO</span>
@@ -1511,7 +1562,8 @@ let gameState = {
         seriesMax: [0, 0],
         inningHistory: [], // [{inning: 1, j1Run: 3, j2Run: 1, j1Score: 3, j2Score: 1}, ...]
         contrasalida: false,
-        finPartidaMotivo: '' // 'distancia', 'entradas', 'empate'
+        finPartidaMotivo: '', // 'distancia', 'entradas', 'empate'
+        recentRuns: [[], []]
     }
 };
 
@@ -1639,6 +1691,7 @@ function iniciarPartida() {
     gameState.play.inningHistory = [];
     gameState.play.contrasalida = false;
     gameState.play.finPartidaMotivo = '';
+    gameState.play.recentRuns = [[], []];
     
     // Configurar cabeceras y textos del tablero
     document.getElementById('j-club').textContent = gameState.config.club.toUpperCase();
@@ -1751,6 +1804,33 @@ function updateScoreboardUI() {
         document.getElementById('j-msg-sub').textContent = '';
     }
     
+    // Render de las últimas 5 tacadas
+    function updateRecentRunsDisplay(playerIdx, elementId) {
+        const runs = p.recentRuns ? (p.recentRuns[playerIdx] || []) : [];
+        const last5 = runs.slice(-5);
+        let html = '';
+        for (let i = 0; i < 5; i++) {
+            const val = last5[i];
+            if (val !== undefined) {
+                html += `<span class="crun-item">${val}</span>`;
+            } else {
+                html += `<span class="crun-item crun-empty">-</span>`;
+            }
+        }
+        const el = document.getElementById(elementId);
+        if (el) el.innerHTML = html;
+    }
+    
+    if (gameState.config.useInnings) {
+        document.getElementById('cruns-hist-1').style.display = 'flex';
+        document.getElementById('cruns-hist-2').style.display = 'flex';
+        updateRecentRunsDisplay(0, 'cruns-hist-1');
+        updateRecentRunsDisplay(1, 'cruns-hist-2');
+    } else {
+        document.getElementById('cruns-hist-1').style.display = 'none';
+        document.getElementById('cruns-hist-2').style.display = 'none';
+    }
+    
     // Actualizar deshabilitado de botones según el estado
     document.getElementById('i-undo').style.opacity = undoStack.length > 0 ? "1" : "0.5";
 }
@@ -1796,7 +1876,20 @@ function finalizarPartida() {
     setTimeout(() => playBeep(650, 0.15), 150);
     setTimeout(() => playBeep(780, 0.3), 300);
     
-    finalizarPartidaYMostrarActa();
+    if (gameState.config.useInnings) {
+        finalizarPartidaYMostrarActa();
+    } else {
+        let ganador = '';
+        if (gameState.play.scores[0] > gameState.play.scores[1]) {
+            ganador = `\nGanador: ${gameState.config.n1.toUpperCase()}`;
+        } else if (gameState.play.scores[1] > gameState.play.scores[0]) {
+            ganador = `\nGanador: ${gameState.config.n2.toUpperCase()}`;
+        } else {
+            ganador = '\nEmpate';
+        }
+        alert(`¡PARTIDA FINALIZADA!${ganador}\nResultado: ${gameState.play.scores[0]} - ${gameState.play.scores[1]}`);
+        nuevaPartida();
+    }
 }
 
 // ══════════════════════════════════════════════
@@ -2089,6 +2182,8 @@ function kpSubmitLeft() {
     // 3. Registrar serie en el historial para la entrada actual
     if (gameState.config.useInnings) {
         registrarSerieHistorial(1, val);
+        if (!p.recentRuns) p.recentRuns = [[], []];
+        p.recentRuns[0].push(val);
     }
     
     // 4. Serie máxima
@@ -2134,7 +2229,13 @@ function kpSubmitRight() {
     
     // 3. Registrar serie en el historial para la entrada actual
     if (gameState.config.useInnings) {
+        if (!p.recentRuns) p.recentRuns = [[], []];
+        if (p.recentRuns[0].length < p.innings) {
+            registrarSerieHistorial(1, 0);
+            p.recentRuns[0].push(0);
+        }
         registrarSerieHistorial(2, val);
+        p.recentRuns[1].push(val);
     }
     
     // 4. Serie máxima
@@ -2143,7 +2244,7 @@ function kpSubmitRight() {
     }
     
     // 5. Sonido y efecto visual
-    if (val > 0) {
+    if (val > 0 || (gameState.config.useInnings)) {
         playBeep(900, 0.12);
         const flashEl = document.getElementById('ha2');
         if (flashEl) {
