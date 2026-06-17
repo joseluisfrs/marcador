@@ -1219,8 +1219,8 @@ canvas.fcv {
 
 .kpad-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     gap: 6px;
     flex: 1;
     min-height: 0;
@@ -1232,7 +1232,7 @@ canvas.fcv {
     border-radius: 8px;
     color: var(--white);
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1rem, 3.5vh, 1.4rem);
+    font-size: clamp(1.1rem, 4vh, 1.6rem);
     font-weight: 700;
     padding: 4px;
     cursor: pointer;
@@ -1263,7 +1263,7 @@ canvas.fcv {
     border-color: rgba(33, 133, 244, 0.3);
     color: #63b3ed;
     font-weight: 900;
-    font-size: clamp(1.2rem, 4.5vh, 1.8rem);
+    font-size: clamp(1.4rem, 5vh, 2.2rem);
 }
 .kbtn-left:active {
     background: #0c2340;
@@ -1275,7 +1275,7 @@ canvas.fcv {
     border-color: rgba(242, 192, 55, 0.3);
     color: #fbd38d;
     font-weight: 900;
-    font-size: clamp(1.2rem, 4.5vh, 1.8rem);
+    font-size: clamp(1.4rem, 5vh, 2.2rem);
 }
 .kbtn-right:active {
     background: #302300;
@@ -1488,9 +1488,9 @@ canvas.fcv {
                         <button class="kbtn" onclick="kpPress(7)">7</button>
                         <button class="kbtn" onclick="kpPress(8)">8</button>
                         <button class="kbtn" onclick="kpPress(9)">9</button>
-                        <button class="kbtn" onclick="kpPress(0)">0</button>
-                        <button class="kbtn kbtn-c" style="grid-column: span 2;" onclick="kpClear()">C</button>
+                        <button class="kbtn" style="grid-column: span 3;" onclick="kpPress(0)">0</button>
                         <button class="kbtn kbtn-left" onclick="kpSubmitLeft()">👈</button>
+                        <button class="kbtn kbtn-c" onclick="kpClear()">C</button>
                         <button class="kbtn kbtn-right" onclick="kpSubmitRight()">👉</button>
                     </div>
                 </div>
