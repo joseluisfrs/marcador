@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Marcador Táctil Premium - Billar a Tres Bandas</title>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Oswald:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Oswald:wght@400;600;700&family=Montserrat:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
 
 /* ══════════════════════════════════════════════
    SISTEMA DE DISEÑO Y DETALLES PREMIUM
@@ -23,6 +23,8 @@
     --glass-bg: rgba(17, 26, 46, 0.7);
     --glass-border: rgba(255, 255, 255, 0.08);
     --shadow-premium: 0 12px 40px rgba(0, 0, 0, 0.5);
+    --btn-bg: linear-gradient(180deg, #273754 0%, #1a263b 100%);
+    --btn-active: #0f172a;
 }
 
 * { 
@@ -607,30 +609,39 @@ input:checked + .slider:before {
 
 .ent-b {
     width: 100%;
-    background: linear-gradient(180deg, #1d222b 0%, #10141a 100%);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #8fa382;
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px), 
+        linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-size: 3px 3px;
+    border-radius: 8px;
+    border: 3px solid #141923;
     overflow: hidden;
     text-align: center;
     flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: inset 0 6px 10px rgba(0, 0, 0, 0.5),
+                0 4px 10px rgba(0, 0, 0, 0.3);
 }
 .ent-h {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1px 0;
-    font-size: clamp(0.7rem, 1.2vh, 0.95rem);
+    background: #1c2317;
+    border-bottom: 1px solid #141923;
+    padding: 5px 0;
+    font-size: clamp(0.95rem, 1.8vh, 1.35rem);
     letter-spacing: 3px;
-    color: var(--gray);
+    color: #8fa382;
     font-weight: 700;
     text-transform: uppercase;
+    text-shadow: none;
 }
 .ent-v {
-    font-size: clamp(2.2rem, 7.5vh, 3.8rem);
-    font-weight: 700;
-    font-family: 'Oswald', sans-serif;
-    padding: 1px 0;
-    line-height: 1.1;
-    color: var(--gold);
+    font-size: clamp(3.4rem, 12vh, 6.0rem);
+    font-weight: 900;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    padding: 4px 0;
+    line-height: 1.0;
+    color: #1e261a;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
+    letter-spacing: -2px;
 }
 
 /* Panel Central - Mensaje del árbitro */
@@ -1189,18 +1200,39 @@ canvas.fcv {
     filter: brightness(0.85);
 }
 
-#i-undo {
-    background: #6f2fa3;
+.pcb-undo-top {
+    flex: none;
+    height: 42px;
+    min-height: 42px;
+    padding: 6px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(0.9rem, 2vh, 1.25rem);
+    font-weight: 700;
+    border-radius: 8px;
+    background: var(--btn-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    margin-top: 2px; /* Close to Inning box */
+    width: 100%;
 }
-#i-undo:active {
-    background: #592482;
+.pcb-undo-top:active {
+    background: var(--btn-active);
 }
 
 #i-nueva {
-    background: #475569;
+    background: var(--btn-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 #i-nueva:active {
-    background: #374151;
+    background: var(--btn-active);
 }
 
 /* ══════════════════════════════════════════════
@@ -1221,7 +1253,6 @@ canvas.fcv {
 }
 
 .kpad-disp {
-    width: 100%;
     background: #04080e;
     border: 1px solid #14243b;
     border-radius: 8px;
@@ -1229,14 +1260,15 @@ canvas.fcv {
     font-family: 'Oswald', sans-serif;
     font-size: clamp(2rem, 5.5vh, 3.2rem);
     font-weight: 700;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 6px 12px;
     letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(0, 255, 204, 0.45);
     box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
-    line-height: 1.1;
-    flex-shrink: 0;
-    margin-top: 6px;
+    line-height: 1;
+    height: 100%;
 }
 
 .kpad-grid {
@@ -1249,7 +1281,7 @@ canvas.fcv {
 }
 
 .kbtn {
-    background: linear-gradient(180deg, #1b263b 0%, #111a2e 100%);
+    background: var(--btn-bg);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     color: var(--white);
@@ -1267,41 +1299,52 @@ canvas.fcv {
 
 .kbtn:active {
     transform: scale(0.92);
-    background: #0f172a;
+    background: var(--btn-active);
     border-color: var(--blue2);
 }
 
 .kbtn-c {
-    background: linear-gradient(180deg, #421a1d 0%, #2b0f11 100%);
-    border-color: rgba(220, 53, 69, 0.3);
-    color: #ff6b6b;
+    background: var(--btn-bg);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
 }
 .kbtn-c:active {
-    background: #2b0f11;
+    background: var(--btn-active);
 }
 
 .kbtn-left {
-    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
-    border-color: rgba(255, 255, 255, 0.8);
-    color: #111a2e;
+    background: var(--btn-bg);
+    border: 2px solid #ffffff;
+    color: #ffffff;
     font-weight: 900;
     font-size: clamp(1.2rem, 4vh, 1.8rem);
 }
 .kbtn-left:active {
-    background: #cbd5e1;
-    border-color: #94a3b8;
+    background: var(--btn-active);
 }
 
 .kbtn-right {
-    background: linear-gradient(180deg, #f2c037 0%, #cfa01d 100%);
-    border-color: rgba(242, 192, 55, 0.8);
-    color: #3d2c00;
+    background: var(--btn-bg);
+    border: 2px solid #f2c037;
+    color: #f2c037;
     font-weight: 900;
     font-size: clamp(1.2rem, 4vh, 1.8rem);
 }
 .kbtn-right:active {
-    background: #d4a317;
-    border-color: #a87f10;
+    background: var(--btn-active);
+}
+
+.arrow-left {
+    color: #ffffff;
+    font-size: clamp(2rem, 4.5vh, 2.8rem);
+    display: inline-block;
+    line-height: 1;
+}
+.arrow-right {
+    color: #f2c037;
+    font-size: clamp(2rem, 4.5vh, 2.8rem);
+    display: inline-block;
+    line-height: 1;
 }
 
 /* Infinity Symbol Premium styling */
@@ -1403,20 +1446,26 @@ canvas.fcv {
     flex-shrink: 0;
 }
 .pc-grid .kbtn {
-    min-height: 54px;
-    font-size: clamp(1.4rem, 3.5vh, 1.9rem);
+    min-height: 48px;
+    font-size: clamp(1.1rem, 2.5vh, 1.5rem);
 }
 .pc-grid .kbtn-left,
 .pc-grid .kbtn-right {
-    min-height: 80px;
-    font-size: clamp(2rem, 6.5vh, 3.2rem);
+    min-height: 68px;
+    font-size: clamp(1.8rem, 4vh, 2.5rem);
 }
 .pc-grid .pcb-action {
-    min-height: 46px;
-    font-size: clamp(0.85rem, 2vh, 1.1rem);
+    min-height: 48px;
+    font-size: clamp(0.85rem, 1.8vh, 1.2rem);
 }
-.pc-grid .kbtn-c {
-    margin-top: 14px;
+.pc-grid .kpad-disp {
+    min-height: 48px;
+    font-size: clamp(1.6rem, 4.5vh, 2.2rem);
+    padding: 2px 12px;
+}
+.pc-grid .kbtn-c,
+.pc-grid .kpad-disp {
+    margin-top: 8px;
 }
 
 #bottom-digits-bar {
@@ -1431,7 +1480,7 @@ canvas.fcv {
 }
 
 .kbtn-digit {
-    background: linear-gradient(180deg, #1b263b 0%, #111a2e 100%);
+    background: var(--btn-bg);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     color: var(--white);
@@ -1450,12 +1499,12 @@ canvas.fcv {
 
 .kbtn-digit:active {
     transform: scale(0.92);
-    background: #0f172a;
+    background: var(--btn-active);
     border-color: var(--blue2);
 }
 
 .hdr-btn-action {
-    background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+    background: var(--btn-bg);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
     color: var(--white);
@@ -1476,7 +1525,7 @@ canvas.fcv {
 }
 .hdr-btn-action:active {
     transform: scale(0.95);
-    background: #1e293b;
+    background: var(--btn-active);
     border-color: rgba(255, 255, 255, 0.15);
 }
 
@@ -1585,6 +1634,9 @@ canvas.fcv {
                     <div class="ent-v" id="j-inn">1</div>
                 </div>
                 
+                <!-- Botón deshacer justo debajo de la entrada -->
+                <button class="pcb-action pcb-undo-top" id="i-undo" onclick="atras()">↩ ATRÁS</button>
+                
                 <!-- Notificaciones del Árbitro -->
                 <div class="brd">
                     <div class="brd-m" id="j-msg-main"></div>
@@ -1593,14 +1645,11 @@ canvas.fcv {
                 
                 <!-- Botonera Central Grid -->
                 <div class="pc-grid">
-                    <button class="kbtn kbtn-left" style="grid-column: span 3;" onclick="kpSubmitLeft()">👈</button>
-                    <button class="kbtn kbtn-right" style="grid-column: span 3;" onclick="kpSubmitRight()">👉</button>
-                    <button class="pcb-action" style="grid-column: span 6;" id="i-undo" onclick="deshacer()">↩ DESHACER</button>
-                    <button class="kbtn kbtn-c" style="grid-column: span 6;" onclick="kpClear()">C</button>
+                    <button class="kbtn kbtn-left" style="grid-column: span 3;" onclick="kpSubmitLeft()"><span class="arrow-left">◀</span></button>
+                    <button class="kbtn kbtn-right" style="grid-column: span 3;" onclick="kpSubmitRight()"><span class="arrow-right">▶</span></button>
+                    <button class="kbtn kbtn-c" style="grid-column: span 2;" onclick="kpClear()">C</button>
+                    <div class="kpad-disp" style="grid-column: span 4;" id="kp-val">0</div>
                 </div>
-
-                <!-- Display del Valor Central -->
-                <div class="kpad-disp" id="kp-val">0</div>
             </div>
 
             <!-- Columna Jugador 2 (Amarilla) -->
@@ -1676,7 +1725,8 @@ let gameState = {
         inningHistory: [], // [{inning: 1, j1Run: 3, j2Run: 1, j1Score: 3, j2Score: 1}, ...]
         contrasalida: false,
         finPartidaMotivo: '', // 'distancia', 'entradas', 'empate'
-        recentRuns: [[], []]
+        recentRuns: [[], []],
+        lastPlayerScored: null
     }
 };
 
@@ -1743,7 +1793,7 @@ function saveState() {
     document.getElementById('i-undo').style.opacity = undoStack.length > 0 ? "1" : "0.5";
 }
 
-function deshacer() {
+function atras() {
     if (undoStack.length === 0) {
         playBeep(300, 0.2); // Pitido de error
         return;
@@ -1805,6 +1855,7 @@ function iniciarPartida() {
     gameState.play.contrasalida = false;
     gameState.play.finPartidaMotivo = '';
     gameState.play.recentRuns = [[], []];
+    gameState.play.lastPlayerScored = null;
     
     // Configurar cabeceras y textos del tablero
     document.getElementById('j-club').textContent = gameState.config.club.toUpperCase();
@@ -2289,19 +2340,36 @@ function kpSubmitLeft() {
     // 1. Guardar estado para deshacer
     saveState();
     
-    // 2. Sumar puntos a Jugador A
-    p.scores[0] += val;
-    
-    // 3. Registrar serie en el historial para la entrada actual
-    if (gameState.config.useInnings) {
-        registrarSerieHistorial(1, val);
-        if (!p.recentRuns) p.recentRuns = [[], []];
-        p.recentRuns[0].push(val);
-    }
-    
-    // 4. Serie máxima
-    if (val > p.seriesMax[0]) {
-        p.seriesMax[0] = val;
+    if (gameState.config.useInnings && p.lastPlayerScored === 1) {
+        // Acumular en la entrada actual del Jugador 1
+        p.scores[0] += val;
+        
+        let lastRunIdx = p.recentRuns[0].length - 1;
+        let prevRun = p.recentRuns[0][lastRunIdx] || 0;
+        let newRun = prevRun + val;
+        p.recentRuns[0][lastRunIdx] = newRun;
+        
+        registrarSerieHistorial(1, newRun);
+        
+        // Serie máxima
+        if (newRun > p.seriesMax[0]) {
+            p.seriesMax[0] = newRun;
+        }
+    } else {
+        // Nueva anotación normal para Jugador 1
+        p.scores[0] += val;
+        
+        if (gameState.config.useInnings) {
+            registrarSerieHistorial(1, val);
+            if (!p.recentRuns) p.recentRuns = [[], []];
+            p.recentRuns[0].push(val);
+            p.lastPlayerScored = 1;
+        }
+        
+        // Serie máxima
+        if (val > p.seriesMax[0]) {
+            p.seriesMax[0] = val;
+        }
     }
     
     // 5. Sonido y efecto visual
@@ -2337,10 +2405,9 @@ function kpSubmitRight() {
     // 1. Guardar estado para deshacer
     saveState();
     
-    // 2. Sumar puntos a Jugador B
+    // Nueva anotación normal para Jugador 2 (nunca acumular consecutivamente)
     p.scores[1] += val;
     
-    // 3. Registrar serie en el historial para la entrada actual
     if (gameState.config.useInnings) {
         if (!p.recentRuns) p.recentRuns = [[], []];
         if (p.recentRuns[0].length < p.innings) {
@@ -2349,11 +2416,17 @@ function kpSubmitRight() {
         }
         registrarSerieHistorial(2, val);
         p.recentRuns[1].push(val);
+        p.lastPlayerScored = 2;
     }
     
-    // 4. Serie máxima
+    // Serie máxima
     if (val > p.seriesMax[1]) {
         p.seriesMax[1] = val;
+    }
+    
+    // Sumar entrada (incrementar entrada) si está configurado
+    if (gameState.config.useInnings) {
+        p.innings++;
     }
     
     // 5. Sonido y efecto visual
@@ -2391,15 +2464,10 @@ function kpSubmitRight() {
     
     // Verificar si se alcanzó el límite de entradas (solo al finalizar el turno de Jugador B)
     const maxInn = gameState.config.maxInnings;
-    if (gameState.config.useInnings && maxInn > 0 && p.innings >= maxInn) {
+    if (gameState.config.useInnings && maxInn > 0 && (p.innings - 1) >= maxInn) { // p.innings has already incremented, so the completed inning is p.innings - 1
         p.finPartidaMotivo = 'entradas';
         finalizarPartida();
         return;
-    }
-    
-    // 7. Sumar entrada (incrementar entrada) si está configurado
-    if (gameState.config.useInnings) {
-        p.innings++;
     }
     
     // 8. Actualizar interfaz
