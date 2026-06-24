@@ -324,7 +324,7 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
     background: linear-gradient(180deg, #101624 0%, var(--bg) 100%);
-    padding: 4px 12px;
+    padding: 12px 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
@@ -336,22 +336,27 @@ input:checked + .slider:before {
     text-align: center; 
     padding: 0 20px; 
 } 
-.hr { text-align: right; }
+.hr { 
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
 
 .hclub-container {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 24px;
 }
 
 .hlogo {
-    height: clamp(24px, 4.5vh, 34px);
+    height: clamp(54px, 10.5vh, 75px);
     width: auto;
     object-fit: contain;
 }
 
 .hclub {
-    font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+    font-size: clamp(2.0rem, 4.0vw, 2.7rem);
     font-weight: 900;
     color: var(--blue2);
     text-transform: uppercase;
@@ -359,7 +364,7 @@ input:checked + .slider:before {
     letter-spacing: 1px;
 }
 .hsub {
-    font-size: clamp(0.6rem, 1vw, 0.8rem);
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
     color: var(--gray);
     letter-spacing: 2px;
     font-weight: 600;
@@ -368,7 +373,7 @@ input:checked + .slider:before {
 }
 
 #j-dist {
-    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
     font-weight: 700;
     color: var(--gold);
     font-family: 'Oswald', sans-serif;
@@ -376,7 +381,7 @@ input:checked + .slider:before {
     text-shadow: 0 0 15px rgba(242, 192, 55, 0.35);
 }
 .hc-lbl {
-    font-size: clamp(0.65rem, 1vh, 0.8rem);
+    font-size: clamp(0.85rem, 1.5vh, 1.1rem);
     color: var(--gray);
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -506,7 +511,7 @@ input:checked + .slider:before {
 
 /* Main Points Display */
 .cj .cpts {
-    font-size: clamp(9.5rem, 48vh, 28rem);
+    font-size: clamp(11rem, 54vh, 32rem);
     font-weight: 700;
     line-height: 0.8;
     text-align: center;
@@ -515,12 +520,15 @@ input:checked + .slider:before {
     align-items: center;
     justify-content: center;
     font-family: 'Oswald', sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
     transition: color 0.2s;
     position: relative;
     z-index: 1;
 }
 .cj .cpts.cpts-3d {
-    font-size: clamp(7rem, 35vh, 19rem);
+    font-size: clamp(9.5rem, 48vh, 27rem);
+    letter-spacing: -0.03em;
 }
 
 /* Stats Section */
@@ -556,8 +564,8 @@ input:checked + .slider:before {
    PANEL CENTRAL
 ══════════════════════════════════════════════ */
 #pc {
-    width: clamp(210px, 32vw, 340px);
-    min-width: 195px;
+    width: clamp(160px, 20vw, 240px);
+    min-width: 150px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -1147,14 +1155,22 @@ canvas.fcv {
     min-height: 0;
 }
 
-/* Estilos para los botones laterales de acción (Deshacer y Reiniciar) */
-.col-side .pcb {
+/* Estilos para los botones centrales de acción (Deshacer y Finalizar) */
+.pc-actions {
+    display: flex;
+    gap: 8px;
     width: 100%;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+}
+
+.pcb-action {
+    flex: 1;
     border: none;
-    border-radius: 10px;
-    padding: 12px 4px;
+    border-radius: 8px;
+    padding: 8px 4px;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(0.9rem, 1.8vh, 1.25rem);
+    font-size: clamp(0.85rem, 1.8vh, 1.25rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1165,7 +1181,12 @@ canvas.fcv {
     align-items: center;
     justify-content: center;
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-    flex-shrink: 0;
+    min-height: 38px;
+}
+
+.pcb-action:active {
+    transform: scale(0.96);
+    filter: brightness(0.85);
 }
 
 #i-undo {
@@ -1173,7 +1194,6 @@ canvas.fcv {
 }
 #i-undo:active {
     background: #592482;
-    transform: scale(0.96);
 }
 
 #i-nueva {
@@ -1181,7 +1201,6 @@ canvas.fcv {
 }
 #i-nueva:active {
     background: #374151;
-    transform: scale(0.96);
 }
 
 /* ══════════════════════════════════════════════
@@ -1202,25 +1221,28 @@ canvas.fcv {
 }
 
 .kpad-disp {
+    width: 100%;
     background: #04080e;
     border: 1px solid #14243b;
     border-radius: 8px;
     color: #00ffcc;
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(1.5rem, 4.5vh, 2rem);
+    font-size: clamp(2rem, 5.5vh, 3.2rem);
     font-weight: 700;
-    text-align: right;
-    padding: 4px 8px;
+    text-align: center;
+    padding: 6px 12px;
     letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(0, 255, 204, 0.45);
     box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
     line-height: 1.1;
+    flex-shrink: 0;
+    margin-top: 6px;
 }
 
 .kpad-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: 6px;
     flex: 1;
     min-height: 0;
@@ -1232,7 +1254,7 @@ canvas.fcv {
     border-radius: 8px;
     color: var(--white);
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1.1rem, 4vh, 1.6rem);
+    font-size: clamp(0.95rem, 3.2vh, 1.35rem);
     font-weight: 700;
     padding: 4px;
     cursor: pointer;
@@ -1259,27 +1281,27 @@ canvas.fcv {
 }
 
 .kbtn-left {
-    background: linear-gradient(180deg, #1b3d6b 0%, #0c2340 100%);
-    border-color: rgba(33, 133, 244, 0.3);
-    color: #63b3ed;
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+    border-color: rgba(255, 255, 255, 0.8);
+    color: #111a2e;
     font-weight: 900;
-    font-size: clamp(1.4rem, 5vh, 2.2rem);
+    font-size: clamp(1.2rem, 4vh, 1.8rem);
 }
 .kbtn-left:active {
-    background: #0c2340;
-    border-color: var(--blue2);
+    background: #cbd5e1;
+    border-color: #94a3b8;
 }
 
 .kbtn-right {
-    background: linear-gradient(180deg, #573f00 0%, #302300 100%);
-    border-color: rgba(242, 192, 55, 0.3);
-    color: #fbd38d;
+    background: linear-gradient(180deg, #f2c037 0%, #cfa01d 100%);
+    border-color: rgba(242, 192, 55, 0.8);
+    color: #3d2c00;
     font-weight: 900;
-    font-size: clamp(1.4rem, 5vh, 2.2rem);
+    font-size: clamp(1.2rem, 4vh, 1.8rem);
 }
 .kbtn-right:active {
-    background: #302300;
-    border-color: var(--gold);
+    background: #d4a317;
+    border-color: #a87f10;
 }
 
 /* Infinity Symbol Premium styling */
@@ -1372,6 +1394,92 @@ canvas.fcv {
     font-weight: 300;
 }
 
+.pc-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    width: 100%;
+    margin-top: auto;
+    flex-shrink: 0;
+}
+.pc-grid .kbtn {
+    min-height: 54px;
+    font-size: clamp(1.4rem, 3.5vh, 1.9rem);
+}
+.pc-grid .kbtn-left,
+.pc-grid .kbtn-right {
+    min-height: 80px;
+    font-size: clamp(2rem, 6.5vh, 3.2rem);
+}
+.pc-grid .pcb-action {
+    min-height: 46px;
+    font-size: clamp(0.85rem, 2vh, 1.1rem);
+}
+.pc-grid .kbtn-c {
+    margin-top: 14px;
+}
+
+#bottom-digits-bar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    padding: 8px;
+    background: rgba(9, 14, 23, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+}
+
+.kbtn-digit {
+    background: linear-gradient(180deg, #1b263b 0%, #111a2e 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.2rem, 3.5vh, 1.8rem);
+    font-weight: 700;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+}
+
+.kbtn-digit:active {
+    transform: scale(0.92);
+    background: #0f172a;
+    border-color: var(--blue2);
+}
+
+.hdr-btn-action {
+    background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(0.9rem, 2vh, 1.25rem);
+    font-weight: 700;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+}
+.hdr-btn-action:active {
+    transform: scale(0.95);
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
 </style>
 </head>
 <body>
@@ -1439,7 +1547,10 @@ canvas.fcv {
                 <div id="j-dist">40</div>
                 <div class="hc-lbl">DISTANCIA</div>
             </div>
-            <div class="hr" id="j-limit-display"></div>
+            <div class="hr">
+                <div id="j-limit-display"></div>
+                <button class="hdr-btn-action" id="i-nueva" onclick="confirmarFinalizarPartida()">🏁 FINALIZAR</button>
+            </div>
         </div>
 
         <!-- Área de tarjetas de puntuación -->
@@ -1464,7 +1575,6 @@ canvas.fcv {
                         </div>
                     </div>
                 </div>
-                <button class="pcb" id="i-undo" onclick="deshacer()">↩ DESHACER</button>
             </div>
 
             <!-- Panel de Control Central -->
@@ -1475,31 +1585,22 @@ canvas.fcv {
                     <div class="ent-v" id="j-inn">1</div>
                 </div>
                 
-                <!-- Teclado de Puntuación Central -->
-                <div class="kpad">
-                    <div class="kpad-disp" id="kp-val">0</div>
-                    <div class="kpad-grid">
-                        <button class="kbtn" onclick="kpPress(1)">1</button>
-                        <button class="kbtn" onclick="kpPress(2)">2</button>
-                        <button class="kbtn" onclick="kpPress(3)">3</button>
-                        <button class="kbtn" onclick="kpPress(4)">4</button>
-                        <button class="kbtn" onclick="kpPress(5)">5</button>
-                        <button class="kbtn" onclick="kpPress(6)">6</button>
-                        <button class="kbtn" onclick="kpPress(7)">7</button>
-                        <button class="kbtn" onclick="kpPress(8)">8</button>
-                        <button class="kbtn" onclick="kpPress(9)">9</button>
-                        <button class="kbtn" style="grid-column: span 3;" onclick="kpPress(0)">0</button>
-                        <button class="kbtn kbtn-left" onclick="kpSubmitLeft()">👈</button>
-                        <button class="kbtn kbtn-c" onclick="kpClear()">C</button>
-                        <button class="kbtn kbtn-right" onclick="kpSubmitRight()">👉</button>
-                    </div>
-                </div>
-                
                 <!-- Notificaciones del Árbitro -->
                 <div class="brd">
                     <div class="brd-m" id="j-msg-main"></div>
                     <div class="brd-s" id="j-msg-sub"></div>
                 </div>
+                
+                <!-- Botonera Central Grid -->
+                <div class="pc-grid">
+                    <button class="kbtn kbtn-left" style="grid-column: span 3;" onclick="kpSubmitLeft()">👈</button>
+                    <button class="kbtn kbtn-right" style="grid-column: span 3;" onclick="kpSubmitRight()">👉</button>
+                    <button class="pcb-action" style="grid-column: span 6;" id="i-undo" onclick="deshacer()">↩ DESHACER</button>
+                    <button class="kbtn kbtn-c" style="grid-column: span 6;" onclick="kpClear()">C</button>
+                </div>
+
+                <!-- Display del Valor Central -->
+                <div class="kpad-disp" id="kp-val">0</div>
             </div>
 
             <!-- Columna Jugador 2 (Amarilla) -->
@@ -1522,8 +1623,20 @@ canvas.fcv {
                         </div>
                     </div>
                 </div>
-                <button class="pcb" id="i-nueva" onclick="confirmarFinalizarPartida()">🏁 FINALIZAR</button>
             </div>
+        </div>
+        <!-- Barra Horizontal Inferior de Números (Toda la pantalla) -->
+        <div id="bottom-digits-bar">
+            <button class="kbtn-digit" onclick="kpPress(0)">0</button>
+            <button class="kbtn-digit" onclick="kpPress(1)">1</button>
+            <button class="kbtn-digit" onclick="kpPress(2)">2</button>
+            <button class="kbtn-digit" onclick="kpPress(3)">3</button>
+            <button class="kbtn-digit" onclick="kpPress(4)">4</button>
+            <button class="kbtn-digit" onclick="kpPress(5)">5</button>
+            <button class="kbtn-digit" onclick="kpPress(6)">6</button>
+            <button class="kbtn-digit" onclick="kpPress(7)">7</button>
+            <button class="kbtn-digit" onclick="kpPress(8)">8</button>
+            <button class="kbtn-digit" onclick="kpPress(9)">9</button>
         </div>
     </div>
 
@@ -1908,8 +2021,8 @@ function finalizarPartidaYMostrarActa() {
         let maxConsecutiveScores = 0;
         let currentConsecutiveScores = 0;
         
-        let runsCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, '6+': 0 };
-        let pointsByRunType = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, '6+': 0 };
+        let runsCount = { 1: 0, 2: 0, 3: 0, 4: 0, '5+': 0 };
+        let pointsByRunType = { 1: 0, 2: 0, 3: 0, 4: 0, '5+': 0 };
         
         p.inningHistory.forEach(hist => {
             const run = (playerIdx === 1) ? hist.j1Run : hist.j2Run;
@@ -1932,8 +2045,7 @@ function finalizarPartidaYMostrarActa() {
                 else if (run === 2) { runsCount[2]++; pointsByRunType[2] += 2; }
                 else if (run === 3) { runsCount[3]++; pointsByRunType[3] += 3; }
                 else if (run === 4) { runsCount[4]++; pointsByRunType[4] += 4; }
-                else if (run === 5) { runsCount[5]++; pointsByRunType[5] += 5; }
-                else if (run >= 6) { runsCount['6+']++; pointsByRunType['6+'] += run; }
+                else if (run >= 5) { runsCount['5+']++; pointsByRunType['5+'] += run; }
             }
         });
         
@@ -1965,44 +2077,43 @@ function finalizarPartidaYMostrarActa() {
         
         return `
             <tr>
-                <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">${label}</td>
-                <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${count1} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct1.toFixed(1)}% de los ptos.)</span></td>
-                <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${count2} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${pct2.toFixed(1)}% de los ptos.)</span></td>
+                <td style="text-align:left; font-weight:600; color:#333; padding: 4px 6px;">${label}</td>
+                <td style="color:var(--blue); font-weight:700; padding: 4px 6px;">${count1} <span style="font-size:0.7rem; font-weight:400; color:#666;">(${pct1.toFixed(1)}%)</span></td>
+                <td style="color:#a87c00; font-weight:700; padding: 4px 6px;">${count2} <span style="font-size:0.7rem; font-weight:400; color:#666;">(${pct2.toFixed(1)}%)</span></td>
             </tr>
         `;
     }
     
     const statsTableHTML = `
-        <table class="acta-tbl" style="margin-top:10px; font-size:0.85rem; width:100%; border-collapse:collapse; margin-bottom:20px;">
+        <table class="acta-tbl" style="margin-top:5px; font-size:0.75rem; width:100%; border-collapse:collapse; margin-bottom:10px;">
             <thead>
                 <tr style="background:#111a2e; color:#fff;">
-                    <th style="text-align:left; padding: 10px; width:45%; font-family:'Oswald',sans-serif;">Estadística de Juego</th>
-                    <th style="color:#fff; background:var(--blue); padding: 10px; font-family:'Oswald',sans-serif; text-align:center;">${gameState.config.n1.toUpperCase()}</th>
-                    <th style="color:#fff; background:#a87c00; padding: 10px; font-family:'Oswald',sans-serif; text-align:center;">${gameState.config.n2.toUpperCase()}</th>
+                    <th style="text-align:left; padding: 5px 8px; width:45%; font-family:'Oswald',sans-serif;">Estadística de Juego</th>
+                    <th style="color:#fff; background:var(--blue); padding: 5px 8px; font-family:'Oswald',sans-serif; text-align:center;">${gameState.config.n1.toUpperCase()}</th>
+                    <th style="color:#fff; background:#a87c00; padding: 5px 8px; font-family:'Oswald',sans-serif; text-align:center;">${gameState.config.n2.toUpperCase()}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Entradas a Cero (Sin Anotar)</td>
-                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats1.blankPct.toFixed(1)}% de entradas)</span></td>
-                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.blankInnings} de ${totalInnings} <span style="font-size:0.75rem; font-weight:400; color:#666;">(${stats2.blankPct.toFixed(1)}% de entradas)</span></td>
+                    <td style="text-align:left; font-weight:600; color:#333; padding: 4px 6px;">Entradas a Cero (Sin Anotar)</td>
+                    <td style="color:var(--blue); font-weight:700; padding: 4px 6px;">${stats1.blankInnings} de ${totalInnings} <span style="font-size:0.7rem; font-weight:400; color:#666;">(${stats1.blankPct.toFixed(1)}%)</span></td>
+                    <td style="color:#a87c00; font-weight:700; padding: 4px 6px;">${stats2.blankInnings} de ${totalInnings} <span style="font-size:0.7rem; font-weight:400; color:#666;">(${stats2.blankPct.toFixed(1)}%)</span></td>
                 </tr>
                 <tr>
-                    <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Racha Máxima sin Anotar (Entradas)</td>
-                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.maxConsecutiveBlanks} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
-                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.maxConsecutiveBlanks} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
+                    <td style="text-align:left; font-weight:600; color:#333; padding: 4px 6px;">Racha Máxima sin Anotar (Entradas)</td>
+                    <td style="color:var(--blue); font-weight:700; padding: 4px 6px;">${stats1.maxConsecutiveBlanks} <span style="font-size:0.7rem; font-weight:400; color:#666;">cons.</span></td>
+                    <td style="color:#a87c00; font-weight:700; padding: 4px 6px;">${stats2.maxConsecutiveBlanks} <span style="font-size:0.7rem; font-weight:400; color:#666;">cons.</span></td>
                 </tr>
                 <tr>
-                    <td style="text-align:left; font-weight:600; color:#333; padding: 7px 10px;">Racha Máxima Anotando (Entradas)</td>
-                    <td style="color:var(--blue); font-weight:700; padding: 7px 10px;">${stats1.maxConsecutiveScores} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
-                    <td style="color:#a87c00; font-weight:700; padding: 7px 10px;">${stats2.maxConsecutiveScores} <span style="font-size:0.75rem; font-weight:400; color:#666;">consecutivas</span></td>
+                    <td style="text-align:left; font-weight:600; color:#333; padding: 4px 6px;">Racha Máxima Anotando (Entradas)</td>
+                    <td style="color:var(--blue); font-weight:700; padding: 4px 6px;">${stats1.maxConsecutiveScores} <span style="font-size:0.7rem; font-weight:400; color:#666;">cons.</span></td>
+                    <td style="color:#a87c00; font-weight:700; padding: 4px 6px;">${stats2.maxConsecutiveScores} <span style="font-size:0.7rem; font-weight:400; color:#666;">cons.</span></td>
                 </tr>
                 ${formatStatRow("Tacadas de 1 punto", 1)}
                 ${formatStatRow("Tacadas de 2 puntos", 2)}
                 ${formatStatRow("Tacadas de 3 puntos", 3)}
                 ${formatStatRow("Tacadas de 4 puntos", 4)}
-                ${formatStatRow("Tacadas de 5 puntos", 5)}
-                ${formatStatRow("Tacadas de 6 o más puntos", '6+')}
+                ${formatStatRow("Tacadas de 5 o más puntos", '5+')}
             </tbody>
         </table>
     `;
@@ -2033,18 +2144,18 @@ function finalizarPartidaYMostrarActa() {
     const efec2 = ((totInnings - stats2.blankInnings) / totInnings) * 100;
     
     const htmlActa = `
-        <div class="acta-header" style="border-bottom:1px solid #333; padding-bottom:10px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div class="acta-header" style="border-bottom:1px solid #333; padding-bottom:6px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
             <div>
-                <h1 style="font-size:1.3rem; margin:0; font-family:'Oswald',sans-serif; color:#111a2e; text-transform:uppercase;">ESTADÍSTICAS DE LA PARTIDA</h1>
-                <p style="font-size:0.8rem; color:#666; margin:4px 0 0; text-transform:uppercase; font-weight:600; text-align:left;">Motivo: ${motivoTexto}</p>
+                <h1 style="font-size:1.1rem; margin:0; font-family:'Oswald',sans-serif; color:#111a2e; text-transform:uppercase;">ESTADÍSTICAS DE LA PARTIDA</h1>
+                <p style="font-size:0.75rem; color:#666; margin:2px 0 0; text-transform:uppercase; font-weight:600; text-align:left;">Motivo: ${motivoTexto}</p>
             </div>
             <div style="display:flex; gap:10px;">
-                <button class="ab ab-c" onclick="cerrarActaYContinuar()" style="background:#17a2b8; color:#fff; padding:8px 16px; font-size:0.9rem; margin:0; line-height:1.2;">▶ CONTINUAR</button>
-                <button class="ab ab-c" onclick="cerrarActaYNuevaPartida()" style="background:#dc3545; color:#fff; padding:8px 16px; font-size:0.9rem; margin:0; line-height:1.2;">🏁 REINICIAR</button>
+                <button class="ab ab-c" onclick="cerrarActaYContinuar()" style="background:#17a2b8; color:#fff; padding:6px 12px; font-size:0.85rem; margin:0; line-height:1.2;">▶ CONTINUAR</button>
+                <button class="ab ab-c" onclick="cerrarActaYNuevaPartida()" style="background:#dc3545; color:#fff; padding:6px 12px; font-size:0.85rem; margin:0; line-height:1.2;">🏁 REINICIAR</button>
             </div>
         </div>
         
-        <table class="acta-tbl" style="margin-bottom:16px;">
+        <table class="acta-tbl" style="margin-bottom:10px; font-size:0.75rem;">
             <thead>
                 <tr>
                     <th>Jugador</th>
@@ -2075,7 +2186,7 @@ function finalizarPartidaYMostrarActa() {
             </tbody>
         </table>
         
-        <h3 style="font-family:'Oswald',sans-serif; margin-bottom:10px; font-size:1.1rem; text-transform:uppercase; color:#111a2e">Estadísticas Detalladas de Tacadas</h3>
+        <h3 style="font-family:'Oswald',sans-serif; margin-bottom:6px; font-size:0.95rem; text-transform:uppercase; color:#111a2e">Estadísticas Detalladas de Tacadas</h3>
         ${statsTableHTML}
     `;
     
@@ -2100,6 +2211,8 @@ function cerrarActaYContinuar() {
     document.getElementById('m-acta').classList.remove('on');
     gameState.config.targetPoints = 0; // Distancia a infinito
     gameState.config.maxInnings = 0;   // Límite de entradas a infinito
+    gameState.play.contrasalida = false;
+    gameState.play.finPartidaMotivo = '';
     gameState.fase = 'playing';
     updateScoreboardUI();
 }
