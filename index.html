@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Marcador Táctil Premium - Billar a Tres Bandas</title>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Oswald:wght@400;600;700&family=Montserrat:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Oswald:wght@400;600;700&family=Montserrat:wght@300;400;600;700&family=Share+Tech+Mono&family=PT+Mono&display=swap');
 
 /* ══════════════════════════════════════════════
    SISTEMA DE DISEÑO Y DETALLES PREMIUM
@@ -513,7 +513,7 @@ input:checked + .slider:before {
 
 /* Main Points Display */
 .cj .cpts {
-    font-size: clamp(11rem, 33vw, 52vh);
+    font-size: clamp(11rem, 30vw, 50vh);
     font-weight: 700;
     line-height: 0.8;
     text-align: center;
@@ -521,13 +521,15 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Montserrat', sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
     transition: color 0.2s;
     position: relative;
     z-index: 1;
 }
 .cj .cpts.cpts-3d {
-    font-size: clamp(8rem, 22vw, 36vh);
+    font-size: clamp(8rem, 20vw, 34vh);
     letter-spacing: -0.04em;
 }
 
