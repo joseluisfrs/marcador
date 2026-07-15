@@ -1560,6 +1560,14 @@ canvas.fcv {
         <div class="cfg-card">
             <div class="cfg-tit" id="i-cfg-tit">⚙ CONFIGURACIÓN</div>
             
+            <div class="cfg-row-toggle" style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 12px; margin-top: -8px;">
+                <span class="cfg-lbl" style="margin: 0; padding: 0; font-size: 0.7rem; color: var(--gray);">¿CONTAR ENTRADAS?</span>
+                <label class="switch">
+                    <input type="checkbox" id="cfg-use-innings" checked onchange="toggleInningLimitView()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            
             <span class="cfg-lbl" id="i-j1" style="color: var(--blue2)">Jugador 1 (Empieza con bola Blanca)</span>
             <div class="cfg-in-wrapper">
                 <input class="cfg-in" type="text" id="cfg-n1" value="JUGADOR A">
@@ -1577,25 +1585,15 @@ canvas.fcv {
                 <input class="cfg-in" type="number" id="cfg-pts" value="" min="0" max="400" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
                 <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-pts')">&times;</button>
             </div>
+            <span class="cfg-desc" style="font-size: 0.65rem; margin-top: 2px; display: block; opacity: 0.8;">(0 = sin límite de carambolas)</span>
             
-            <div class="cfg-r2" style="margin-top: 15px; align-items: flex-end;">
-                <!-- Contar Entradas -->
-                <div style="display: flex; flex-direction: column; gap: 6px;">
-                    <span class="cfg-lbl" style="margin: 0; padding: 0;">¿CONTAR ENTRADAS?</span>
-                    <label class="switch">
-                        <input type="checkbox" id="cfg-use-innings" checked onchange="toggleInningLimitView()">
-                        <span class="slider round"></span>
-                    </label>
+            <div id="cfg-limit-innings-wrapper" style="margin-top: 10px;">
+                <span class="cfg-lbl" id="i-max-innings">LÍMITE ENTRADAS</span>
+                <div class="cfg-in-wrapper">
+                    <input class="cfg-in" type="number" id="cfg-max-innings" value="" min="0" max="999" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
+                    <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-max-innings')">&times;</button>
                 </div>
-                
-                <!-- Límite de Entradas -->
-                <div id="cfg-limit-innings-wrapper" style="display: flex; flex-direction: column; gap: 6px;">
-                    <span class="cfg-lbl" id="i-max-innings" style="margin: 0; padding: 0;">LÍMITE ENTRADAS</span>
-                    <div class="cfg-in-wrapper">
-                        <input class="cfg-in" type="number" id="cfg-max-innings" value="" min="0" max="999" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
-                        <button class="cfg-clear-btn" type="button" onclick="clearInput('cfg-max-innings')">&times;</button>
-                    </div>
-                </div>
+                <span class="cfg-desc" style="font-size: 0.65rem; margin-top: 2px; display: block; opacity: 0.8;">(0 = sin límite de entradas)</span>
             </div>
             
             <button class="cfg-go" id="i-emp" onclick="iniciarPartida()">EMPEZAR PARTIDA ▶</button>
