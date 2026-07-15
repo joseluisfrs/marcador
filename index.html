@@ -132,11 +132,11 @@ html, body {
 
 .cfg-card {
     width: 100%;
-    max-width: 560px;
+    max-width: 480px;
     background: var(--bg2);
     border: 1px solid #1f304e;
     border-radius: 20px;
-    padding: 30px 24px;
+    padding: 24px 20px;
     box-shadow: var(--shadow-premium);
 }
 
@@ -513,7 +513,7 @@ input:checked + .slider:before {
 
 /* Main Points Display */
 .cj .cpts {
-    font-size: clamp(11rem, 30vw, 50vh);
+    font-size: clamp(8rem, 20vw, 34vh);
     font-weight: 700;
     line-height: 0.8;
     text-align: center;
@@ -524,13 +524,10 @@ input:checked + .slider:before {
     font-family: 'Montserrat', sans-serif;
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1;
+    letter-spacing: -0.04em;
     transition: color 0.2s;
     position: relative;
     z-index: 1;
-}
-.cj .cpts.cpts-3d {
-    font-size: clamp(8rem, 20vw, 34vh);
-    letter-spacing: -0.04em;
 }
 
 /* Stats Section */
@@ -1202,11 +1199,11 @@ canvas.fcv {
 
 .pcb-undo-top {
     flex: none;
-    height: 64px;
-    min-height: 64px;
+    height: 76px;
+    min-height: 76px;
     padding: 6px 16px;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1.1rem, 2.4vh, 1.6rem);
+    font-size: clamp(1.2rem, 2.6vh, 1.8rem);
     font-weight: 700;
     border-radius: 8px;
     background: var(--btn-bg);
@@ -1661,8 +1658,8 @@ canvas.fcv {
                 <div class="pc-grid">
                     <button class="kbtn kbtn-left" style="grid-column: span 3;" onclick="kpSubmitLeft()"><span class="arrow-left"></span></button>
                     <button class="kbtn kbtn-right" style="grid-column: span 3;" onclick="kpSubmitRight()"><span class="arrow-right"></span></button>
-                    <button class="kbtn kbtn-c" style="grid-column: span 2;" onclick="kpClear()">C</button>
-                    <div class="kpad-disp" style="grid-column: span 4;" id="kp-val">0</div>
+                    <button class="kbtn kbtn-c" style="grid-column: span 3;" onclick="kpClear()">C</button>
+                    <div class="kpad-disp" style="grid-column: span 3;" id="kp-val">0</div>
                 </div>
             </div>
 
@@ -1917,18 +1914,6 @@ function updateScoreboardUI() {
     jp1El.textContent = p.scores[0];
     jp2El.textContent = p.scores[1];
     
-    // Si la puntuación supera 99, aplicamos clase de tamaño reducido para evitar desborde
-    if (p.scores[0] >= 100) {
-        jp1El.classList.add('cpts-3d');
-    } else {
-        jp1El.classList.remove('cpts-3d');
-    }
-    
-    if (p.scores[1] >= 100) {
-        jp2El.classList.add('cpts-3d');
-    } else {
-        jp2El.classList.remove('cpts-3d');
-    }
     
     // Entrada actual
     document.getElementById('j-inn').textContent = p.innings;
