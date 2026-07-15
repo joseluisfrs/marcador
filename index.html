@@ -47,6 +47,13 @@ html, body {
     -webkit-touch-callout: none;
     overscroll-behavior-y: contain; /* Prevents pull-to-refresh on Android Chrome */
 }
+body {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+body.ready {
+    opacity: 1;
+}
 
 .screen { 
     display: none; 
@@ -521,7 +528,7 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Montserrat', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1;
     letter-spacing: -0.05em;
@@ -2489,6 +2496,20 @@ function clearInput(inputId) {
         input.focus(); // mantiene el foco y teclado virtual en pantalla
         playBeep(450, 0.05);
     }
+}
+
+// Inicialización para evitar el parpadeo de zoom en WebView (Fully Kiosk Browser)
+function inicializarKioskBrowserFix() {
+    setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+        document.body.classList.add('ready');
+    }, 150);
+}
+
+if (document.readyState === 'complete') {
+    inicializarKioskBrowserFix();
+} else {
+    window.addEventListener('load', inicializarKioskBrowserFix);
 }
 
 </script>
